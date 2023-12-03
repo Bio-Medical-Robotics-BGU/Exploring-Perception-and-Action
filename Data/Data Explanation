@@ -4,9 +4,10 @@ Two formats of the data have been uploaded:
    The data included:
    a. The signals recorded during the interactions with each the comparison (DataComp) and standard (DataRef) virutal objects. 
       - Column 1: time.
-      - Columns 2 - 5: position.
-      - Columns 6 - 9: velocity.
-      - Columns 10 - 13: grip force.
+      - Columns 2 - 4: position.
+      - Columns 5 - 7: velocity.
+      - Columns 8 - 10: load force.
+      - Columns 11 - 13: grip force.
       - Columns 14 - 15: commanded and recorded movements of the tactors.
    b. The values of the comparison and standard stiffness levels (CompStiffnessVal and RefStiffnessVal).
    c. Gain - the tactor displacement gain.
