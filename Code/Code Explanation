@@ -1,3 +1,4 @@
-The included codes are as follows:
+The included codes are as follows, in the order in which they run:
 
-1. Preprocessing (MATLAB code) - this code takes the participant data and performs the preprocessing described in the manuscript. 
+1. Preprocessing (MATLAB code) - takes the participant data and performs the preprocessing described in the manuscript. 
+2. Create10Folds (Python code) - splits the participants into training and test data for each of the 10 folds in the k-fold validation. 
