@@ -1,4 +1,4 @@
-Two formats of the data have been uploaded:
+The following data have been uploaded:
 1. Participants' original data - this is the data that was recorded during the stiffness discrimination experiment. 
    Each participant has a MATLAB data file, and is opened as a cell array in MATLAB. Each cell in the array is a structure containing the data from one trial.
    The data included:
@@ -13,6 +13,6 @@ Two formats of the data have been uploaded:
    c. Gain - the tactor displacement gain.
    d. Answer - which virtual object the participant perceived as stiffer ('Comp' for comparison and 'Ref' for standard).
 
-2. The data following all the preprocessing - as was inputted into the artificial neural networks.  
+2. The dictionaries containing the splits into train and test data for each of the 10 splits.
 
 
