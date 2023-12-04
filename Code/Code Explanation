@@ -2,5 +2,6 @@ The included codes are as follows, in the order in which they run:
 
 1. Preprocessing (MATLAB code) - takes the participant data and performs the preprocessing described in the manuscript. 
 2. ModelFeatureExtraction (MATLAB code) - takes the participant data and computes the features for the models. 
-3. Create10Folds (Python code) - splits the participants into training and test data for each of the 10 folds in the k-fold validation. 
-4. CreateDatasetsForEachFold (Python code) - creates the training and test datasets for each fold based on the division in the "Create10Folds" code.
+3. Models (Python code) - uses the computed features in the "ModelFeatureExtraction" code and creates the model answers for each participant in each trial.
+4. Create10Folds (Python code) - splits the participants into training and test data for each of the 10 folds in the k-fold validation. 
+5. CreateDatasetsForEachFold (Python code) - creates the training and test datasets for each fold based on the division in the "Create10Folds" code.
