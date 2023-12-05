@@ -4,6 +4,11 @@ To get the responses predicted by the models for each participant:
   1. ModelFeatureExtraction (MATLAB code) - takes the participant data, preprocesses and computes the features for the models. 
   2. Models (Python code) - uses the computed features in the "ModelFeatureExtraction" code and creates the model answers for each participant in each trial.
 
+To get the responses predicted by the logistic regression for each participant:
+  1. CreateDatasetsLogisticRegression (Python code) - creates the training and test datasets for the logistic regression model.
+  2. LogisticRegression (Python code) - runs in a loop over the 10 folds, trains and gets the predictions of the logistic regression model for each participant
+     in each trial.
+
 To get the responses predicted by the neural networks for each participant:
   1. Preprocessing (MATLAB code) - takes the participant data and performs the preprocessing described in the manuscript. 
   2. Create10Folds (Python code) - splits the participants into training and test data for each of the 10 folds in the k-fold validation. 
