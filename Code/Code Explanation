@@ -1,7 +1,16 @@
-The included codes are as follows, in the order in which they run:
+The included codes are as follows:
 
-1. Preprocessing (MATLAB code) - takes the participant data and performs the preprocessing described in the manuscript. 
-2. ModelFeatureExtraction (MATLAB code) - takes the participant data and computes the features for the models. 
-3. Models (Python code) - uses the computed features in the "ModelFeatureExtraction" code and creates the model answers for each participant in each trial.
-4. Create10Folds (Python code) - splits the participants into training and test data for each of the 10 folds in the k-fold validation. 
-5. CreateDatasetsForEachFold (Python code) - creates the training and test datasets for each fold based on the division in the "Create10Folds" code.
+To get the responses predicted by the models for each participant:
+  1. ModelFeatureExtraction (MATLAB code) - takes the participant data, preprocesses and computes the features for the models. 
+  2. Models (Python code) - uses the computed features in the "ModelFeatureExtraction" code and creates the model answers for each participant in each trial.
+
+To get the responses predicted by the neural networks for each participant:
+  1. Preprocessing (MATLAB code) - takes the participant data and performs the preprocessing described in the manuscript. 
+  2. Create10Folds (Python code) - splits the participants into training and test data for each of the 10 folds in the k-fold validation. 
+  3. CreateDatasetsForEachFold (Python code) - creates the training and test datasets for each fold based on the division in the "Create10Folds" code.
+
+  The neural network code options are as follows:
+    a. NeuralNetwork (Python code) - runs in a loop over all 10 folds, trains the networks and gets the predicted responses for each test participant in the 
+       test data for that fold. This is all repeated in a loop five times to ensure consistency and no effect of the random seed.
+       In this code, the user can choose which signals should be included (any combination of position, velocity, acceleration and grip force).
+
