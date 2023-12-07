@@ -12,6 +12,7 @@ The following data have been uploaded:
    b. The values of the comparison and standard stiffness levels (CompStiffnessVal and RefStiffnessVal).
    c. Gain - the tactor displacement gain.
    d. Answer - which virtual object the participant perceived as stiffer ('Comp' for comparison and 'Ref' for standard).
+   (Note - for participants whose data exceeded 25 MB, the data was uploaded in two files, each containing half of the trials.)
 
 2. The dictionaries containing the splits into train and test data for each of the 10 splits.
 
