@@ -35,6 +35,8 @@ sigs = list(map(int, input("Which signals should be included? \n 1. Position \n 
 sigs = np.array(sigs, dtype='int')
 sigs -= 1
 
+save_model = int(input("Would you like to save the trained networks? \n 1. Yes \n 2. No \n"))
+
 for run in Runs:
   for Split in Splits:
     os.chdir(DatasetPath)
@@ -119,10 +121,19 @@ for run in Runs:
                         batch_size = 512, 
                         shuffle = True, epochs = 50, verbose = 1, callbacks = callbacks)
    
-    #uncomment to save model
-    os.chdir(r"D:\OneDrive\lab\PhD\python\PerceptionActionInSurface\Separate\lstm")
-    model_name = f'Sep_NormF_acc_FolAlN_Bi_ls{lstm1}_do{do}_bn_att_ls{lstm2}_do{do}_bn_ls{lstm3}_dens_reg{reg}_ep50_lr0.0001_d0.95_bs512_PosGF_FIRST_Abl_F{Split}_R{run}.h5'
-    model.save(model_name)
+    #to save model:
+    all_sigs = ['Position', 'Velocity', 'Acceleration', 'GripForce']
+    included = ""
+    
+    for s in range(4):
+      if s in sigs:
+        included += all_sigs[s]
+ 
+    if save_model == 1:
+      # Replace the following directory with the location where the model should be saved
+      os.chdir(save_path)  
+      model_name = f'Network_{included}_Split{Split}_Run{run}.h5'
+      model.save(model_name)
     
     # getting model predictions for testing participants of this fold
     os.chdir(DatasetPath)
@@ -153,15 +164,7 @@ for run in Runs:
       mdic1 = {"Preds": preds, "label": "Preds"}
       
       #saving predictions      
-      os.chdir(save_path)  
-      
-      all_sigs = ['Position', 'Velocity', 'Acceleration', 'GripForce']
-      included = ""
-      
-      for s in range(4):
-        if s in sigs:
-          included += all_sigs[s]
-          
+      os.chdir(save_path)            
 
       scipy.io.savemat(f'Preds_SN{i}_{included}.mat', mdic1)
 
