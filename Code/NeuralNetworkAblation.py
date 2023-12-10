@@ -36,6 +36,8 @@ sigs = np.array([0, 3])
 
 abl = int(input("Which layers should be included? \n 1. Block #1 \n 2. Block #1 + last LSTM \n 3. Block #1 + attention + last LSTM \n 4. Full model \n"))
 
+save_model = int(input("Would you like to save the trained networks? \n 1. Yes \n 2. No \n"))
+
 for run in Runs:
   for Split in Splits:
     os.chdir(DatasetPath)
@@ -152,6 +154,17 @@ for run in Runs:
                         batch_size = 512, 
                         shuffle = True, epochs = 50, verbose = 1, callbacks = callbacks)
    
+    #to save model:
+      
+    all_abls = ['Block1', 'Block1_LastLSTM', 'Block1_Att_LastLSTM', 'FullModel']
+
+
+    if save_model == 1:
+      # Replace the following directory with the location where the model should be saved
+      os.chdir(save_path)  
+      model_name = f'Network_{all_abls[abl - 1]}_Split{Split}_Run{run}.h5'
+      model.save(model_name)
+      
     # getting model predictions for testing participants of this fold
     os.chdir(DatasetPath)
     TestIndsSplit = np.load("Dictionary_TestIndSplit.npy", allow_pickle = 'TRUE').item()
@@ -183,8 +196,6 @@ for run in Runs:
       #saving predictions      
       os.chdir(save_path)  
       
-      all_abls = ['Block1', 'Block1_LastLSTM', 'Block1_Att_LastLSTM', 'FullModel']
-
       scipy.io.savemat(f'Preds_SN{i}_{all_abls[abl - 1]}.mat', mdic1)
 
 

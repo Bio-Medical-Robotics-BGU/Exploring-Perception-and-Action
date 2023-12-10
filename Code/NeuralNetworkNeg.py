@@ -37,6 +37,8 @@ sigs = np.array([0, 3])
 
 stretch = int(input("Include negative stretch session? \n 1. No \n 2. Yes \n"))
 
+save_model = int(input("Would you like to save the trained networks? \n 1. Yes \n 2. No \n"))
+
 
 for run in Runs:
   for Split in Splits:
@@ -127,6 +129,15 @@ for run in Runs:
                         batch_size = 512, 
                         shuffle = True, epochs = 50, verbose = 1, callbacks = callbacks)
    
+    #to save model:
+    options = ['AllParticipants', 'BothStretch']
+      
+    if save_model == 1:
+      # Replace the following directory with the location where the model predictions should be saved
+      os.chdir(save_path)  
+      model_name = f'Network_{options[stretch - 1]}_Split{Split}_Run{run}.h5'
+      model.save(model_name)
+      
     # getting model predictions for testing participants of this fold
     os.chdir(DatasetPath)
     TestIndsSplit = np.load("Dictionary_TestIndSplit_AllParticipants.npy", allow_pickle = 'TRUE').item()
@@ -167,8 +178,6 @@ for run in Runs:
       
       #saving predictions      
       os.chdir(save_path)  
-      
-      options = ['AllParticipants', 'BothStretch']
       
       scipy.io.savemat(f'Preds_SN{i}_{options[stretch - 1]}.mat', mdic1)
 
