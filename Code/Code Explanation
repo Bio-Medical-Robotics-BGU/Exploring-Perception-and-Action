@@ -27,3 +27,9 @@ To get the responses predicted by the neural networks for each participant:
        In this code, all the participants (including the four negative-effect participants) are included. The user can choose if the negative stretch session is 
        included or not.
 
+Analyses:
+  1. CertaintyLoss (Python code) - computes the certainty values for the predictions of each network for each fold for one of the runs, and creates the graphs for
+     Fig. 7.
+
+  
+
