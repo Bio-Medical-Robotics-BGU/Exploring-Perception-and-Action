@@ -30,6 +30,7 @@ To get the responses predicted by the neural networks for each participant:
 Analyses:
   1. CertaintyLoss (Python code) - computes the certainty values for the predictions of each network for each fold for one of the runs, and creates the graphs for
      Fig. 7.
+  2. Fig3_Preprocessing (MATLAB code) - creates Fig. 3 in the manuscript, which demonstrates the preprocessing. 
 
   
 
