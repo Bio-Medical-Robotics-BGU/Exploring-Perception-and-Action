@@ -1,7 +1,9 @@
 %% This code analyses the network predictions - creates the real and predicted curves (for 
 % example, those shown in Fig. 6), and computes the regression of the
 % predicted augmentation against the real one, and compares the real and
-% predicted curves in each condition. 
+% predicted curves in each condition. (Fig. 6, 8, 9, and 10).
+% This also contains the code for the percentage of erros (model or participant
+% per comparison stiffness level (Fig. 7(a-f))).
 
 %replace following directory with the location of the saved network
 %predictions
