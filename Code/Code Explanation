@@ -35,7 +35,7 @@ Analyses:
   4. PsychometricFitting_ForMetricDescription (MATLAB code) - called by Fig4_PsychometricCurveMetrics to create the psychometric curves.
   5. PostModelAnalyses (MATLAB code) - creates the real and predicted psychometric curves based on the participants answers and a model's predictions (model or 
      network choice is user input). The code then computes the PSE and JND errors, and performs the regression of predicted augmentation against real augmentation.
-     This code creates the plots for Fig. 6, 7(a-f), 8, 9, and 10.
+     This code is for the positive stretch session, and creates the plots for Fig. 6, 7(a-f), 8, 9, and 10.
   6. PsychometricMats (MATLAB code) - called by PostModelAnalyses to prepare the data for psychometric curves.
   7. PsychometricFitting (MATLAB code) - called by PsychometricMats to create the psychometric curves. 
 
