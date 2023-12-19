@@ -23,11 +23,22 @@ fns = fieldnames(folds);
 %getting the model type from user
 model_name = input('What network would you like (e.g., which signals or parts of the network are included?) \n' ,'s');
 
+%for PSE and JND errors, and regression
 RealPSEs = [];
 PredPSEs = [];
 RealJNDs = [];
 PredJNDS = [];
+
+%for accuracy
 Accuracies = zeros(10, 1);
+
+%for percentage of errors per comparison stiffness level
+AllLabels = [];
+AllPredictions = [];
+AllTdgains = [];
+AllKComps = [];
+
+%for finding the two large error participants
 LargeErrors = []; %to save indices of large error participants
 count = 0;
 %% Creating psychometric curves, and getting PSE and JND values
@@ -69,6 +80,11 @@ for f = 1:10 %run over the 10 folds
         PredPSEs = [PredPSEs; pses];
         RealJNDs = [RealJNDs; pses];
         PredJNDS = [PredJNDS; pses];
+
+        AllLabels = [AllLabels; Labels];
+        AllPredictions = [AllPredictions; preds];
+        AllTdgains = [AllTdgains; TdGains];
+        AllKComps = [AllKComps; KComps];
 
         FoldLabels = [FoldLabels; Labels];
         FoldPreds = [FoldPreds; preds];
@@ -284,3 +300,154 @@ axis square
 
 plot([0, 0], get(gca, 'Ylim'), 'k--', 'HandleVisibility','off')
 plot(get(gca, 'Xlim'), [0, 0], 'k--', 'HandleVisibility','off')
+
+%% Percentage of errors made by model per comparison stiffness level (Fig. 7(d-f))
+UniqueK = unique(AllKComps);
+
+%Force
+TotalCounter1 = zeros(size(UniqueK));
+ErrorCounter1 = zeros(size(UniqueK));
+CorrectCounter1 = zeros(size(UniqueK));
+
+AllPreds1 = AllPredictions(find(AllTdgains == 0));
+AllLabels1 = AllLabels(find(AllTdgains == 0));
+Kcomps1 = AllKComps(find(AllTdgains == 0));
+
+for i = 1:length(Kcomps1)
+    ind = find(UniqueK == Kcomps1(i));
+    TotalCounter1(ind) = TotalCounter1(ind) + 1;
+    
+    if AllPreds1(i) == AllLabels1(i) %correct
+        CorrectCounter1(ind) = CorrectCounter1(ind) + 1;
+    else %mistake
+        ErrorCounter1(ind) = ErrorCounter1(ind) + 1;
+    end
+
+end
+
+% Skin Stretch
+UniqueK = unique(Kcomps);
+TotalCounter2 = zeros(size(UniqueK));
+ErrorCounter2 = zeros(size(UniqueK));
+CorrectCounter2 = zeros(size(UniqueK));
+
+AllPreds2 = AllPredictions(find(AllTdgains == 80));
+AllLabels2 = AllLabels(find(AllTdgains == 80));
+Kcomps2 = AllKComps(find(AllTdgains == 80));
+
+for i = 1:length(Kcomps2)
+    ind = find(UniqueK == Kcomps(i));
+    TotalCounter2(ind) = TotalCounter2(ind) + 1;
+    
+    if AllPreds2(i) == AllLabels2(i) %correct
+        CorrectCounter2(ind) = CorrectCounter2(ind) + 1;
+    else %mistake
+        ErrorCounter2(ind) = ErrorCounter2(ind) + 1;
+    end
+
+end
+
+% All trials together
+ErrorCounter = ErrorCounter1 + ErrorCounter2;
+TotalCounter = TotalCounter1 + TotalCounter2;
+CorrectCounter = CorrectCounter1 + CorrectCounter2;
+
+% plotting
+%All trials (Fig. 7(d))
+figure
+bar(UniqueK, 100*(ErrorCounter./TotalCounter), 'facecolor', [0.7 0.7 0.7])
+xlabel('Comparison Stiffness Level [N/m]', 'fontsize', 14)
+ylabel('Percentage of Errors [%]', 'fontsize', 14)
+set(gca, 'fontname', 'Times New Roman', 'fontsize', 14)
+ylim([0, 80])
+
+%Force trials (Fig. 7(e))
+figure
+bar(UniqueK, 100*(ErrorCounter1./TotalCounter1), 'facecolor', [255 159 159]./255)
+xlabel('Comparison Stiffness Level [N/m]', 'fontsize', 14)
+ylabel('Percentage of Errors [%]', 'fontsize', 14)
+set(gca, 'fontname', 'Times New Roman', 'fontsize', 14)
+ylim([0, 80])
+
+%Skin stretch trials (Fig. 7(f))
+figure
+bar(UniqueK, 100*(ErrorCounter2./TotalCounter2), 'facecolor', [192 0 0]./255)
+xlabel('Comparison Stiffness Level [N/m]', 'fontsize', 14)
+ylabel('Percentage of Errors [%]', 'fontsize', 14)
+set(gca, 'fontname', 'Times New Roman', 'fontsize', 14)
+ylim([0, 80])
+
+%% Percentage of errors made by participants per comparison stiffness level (Fig. 7(a-c))
+AllRlabels = zeros(size(AllKComps)); 
+%find all the places where the stiffer object is standard - so the true
+%answer is 1
+stands = find(AllKComps < 85);
+AllRlabels(stands) = 1; %otherwise, the correct answer is comparison
+
+%Force
+TotalCounter11 = zeros(size(UniqueK));
+ErrorCounter11 = zeros(size(UniqueK));
+CorrectCounter11 = zeros(size(UniqueK));
+
+AllLabels11 = AllRlabels(find(AllTdgains == 0));
+
+for i = 1:length(Kcomps1)
+    ind = find(UniqueK == Kcomps1(i));
+    TotalCounter11(ind) = TotalCounter11(ind) + 1;
+    
+    if AllLabels11(i) == AllLabels1(i) %correct
+        CorrectCounter11(ind) = CorrectCounter11(ind) + 1;
+    else %mistake
+        ErrorCounter11(ind) = ErrorCounter11(ind) + 1;
+    end
+
+end
+
+% Skin Stretch
+TotalCounter22 = zeros(size(UniqueK));
+ErrorCounter22 = zeros(size(UniqueK));
+CorrectCounter22 = zeros(size(UniqueK));
+
+AllLabels22 = AllRlabels(find(AllTdgains == 80));
+
+for i = 1:length(Kcomps2)
+    ind = find(UniqueK == Kcomps(i));
+    TotalCounter22(ind) = TotalCounter22(ind) + 1;
+    
+    if AllLabels22(i) == AllLabels2(i) %correct
+        CorrectCounter22(ind) = CorrectCounter22(ind) + 1;
+    else %mistake
+        ErrorCounter22(ind) = ErrorCounter22(ind) + 1;
+    end
+
+end
+
+% All trials together
+ErrorCounter12 = ErrorCounter11 + ErrorCounter22;
+TotalCounter12 = TotalCounter11 + TotalCounter22;
+CorrectCounter12 = CorrectCounter11 + CorrectCounter22;
+
+%% plotting
+%All trials (Fig. 7(a))
+figure
+bar(UniqueK, 100*(ErrorCounter12./TotalCounter12), 'facecolor', [1 1 1])
+xlabel('Comparison Stiffness Level [N/m]', 'fontsize', 14)
+ylabel('Percentage of Errors [%]', 'fontsize', 14)
+set(gca, 'fontname', 'Times New Roman', 'fontsize', 14)
+ylim([0, 80])
+
+%Force trials (Fig. 7(b))
+figure
+bar(UniqueK, 100*(ErrorCounter11./TotalCounter11), 'facecolor', [113 198 255]./255)
+xlabel('Comparison Stiffness Level [N/m]', 'fontsize', 14)
+ylabel('Percentage of Errors [%]', 'fontsize', 14)
+set(gca, 'fontname', 'Times New Roman', 'fontsize', 14)
+ylim([0, 80])
+
+%Skin stretch trials (Fig. 7(c))
+figure
+bar(UniqueK, 100*(ErrorCounter22./TotalCounter22), 'facecolor', [0 121 204]./255)
+xlabel('Comparison Stiffness Level [N/m]', 'fontsize', 14)
+ylabel('Percentage of Errors [%]', 'fontsize', 14)
+set(gca, 'fontname', 'Times New Roman', 'fontsize', 14)
+ylim([0, 80])
