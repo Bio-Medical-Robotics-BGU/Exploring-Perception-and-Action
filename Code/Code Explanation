@@ -39,6 +39,8 @@ Analyses:
   6. PsychometricMats (MATLAB code) - called by PostModelAnalyses to prepare the data for psychometric curves.
   7. PsychometricFitting (MATLAB code) - called by PsychometricMats to create the psychometric curves. 
   8. PostModelAnalyses_BothStretchSessions (MATLAB code) - similar to PostModelAnalyses, however for both stretch sessions. This code creates the plots for Fig. 11.
+  9. PsychometricMatsBothStretch (MATLAB code) - called by PostModelAnalyses_BothStretchSessions to prepare the data for psychometric curves.
+  10. PsychometricFitting_BothStretch (MATLAB code) - called by PsychometricMatsBothStretch to create the psychometric curves. 
 
   
 
