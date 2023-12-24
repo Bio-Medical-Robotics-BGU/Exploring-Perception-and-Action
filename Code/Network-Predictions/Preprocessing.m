@@ -33,7 +33,7 @@ for k = 1:length(forvector) %loop that runs over all the participants
         trial_data = data{j}; %get trial data
         try %this is for the case of data not saved properly during the
             %stiffness discrimination experiment. This happened for one
-            %trial for one participant (Participant 8, i = 205)
+            %trial for one participant (Participant 8, j = 253)
 
             dt_gain = trial_data.Gain;
 
