@@ -55,14 +55,14 @@ for Split in np.arange(1, k + 1):
         else:
             TrainFeaturesComp = np.concatenate((TrainFeaturesComp, features_comp), axis = 0)
             TrainFeaturesRef = np.concatenate((TrainFeaturesRef, features_ref), axis = 0)
-
+            
     #test
     for i in TestParticipants:
         print(i)
         #features
         os.chdir(MatPath)
         sigs = scipy.io.loadmat(f'Features_SN{i}.mat')
-        sigs = sigs['AllFeatures']
+        sigs = sigs['AllFeatures'][:192, :, :]
         
         features_ref = sigs[:, 0, :]
         features_comp = sigs[:, 1, :]
