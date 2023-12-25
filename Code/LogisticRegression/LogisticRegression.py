@@ -1,6 +1,5 @@
 ''' This code computes the linear regression of the four model features'''
 # %% Imports 
-import sklearn.metrics as sk
 from sklearn.linear_model import LogisticRegression
 
 import os
@@ -58,7 +57,7 @@ for Split in Splits:
     #features
     os.chdir(MatPath)
     sigs = scipy.io.loadmat(f'Features_SN{i}.mat')
-    sigs = sigs['AllFeatures']
+    sigs = sigs['AllFeatures'][:192, :, :]
     
     features_ref = sigs[:, 0, :]
     features_comp = sigs[:, 1, :]
