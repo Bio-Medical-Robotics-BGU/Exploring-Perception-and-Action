@@ -5,6 +5,7 @@ test participants for each of the 10 folds'''
 from sklearn.model_selection import KFold
 import os
 import numpy as np
+from scipy.io import savemat
 
 # %% Paths
 # Replace the following directory with the location of the saved preprocessed data
@@ -38,6 +39,9 @@ os.chdir(DatasetPath)
 np.save("Dictionary_TrainIndSplit.npy", TrainIndsSplit)
 np.save("Dictionary_TestIndSplit.npy", TestIndsSplit)
 
+#to save for opening in MATLAB
+savemat('TestIndsSplit.mat', TestIndsSplit, oned_as='row')
+
 # %% Randomly adding in the four negative effect participants
 AddParticipants = np.array([2, 4, 5, 21])
 
@@ -65,3 +69,6 @@ for i in Threes:
 os.chdir(DatasetPath)
 np.save("Dictionary_TrainIndSplit_AllParticipants.npy", TrainIndsSplit)
 np.save("Dictionary_TestIndSplit_AllParticipants.npy", TestIndsSplit)
+
+#to save for opening in MATLAB
+savemat('TestIndsSplit_AllParticipants.mat', TestIndsSplit, oned_as='row')
