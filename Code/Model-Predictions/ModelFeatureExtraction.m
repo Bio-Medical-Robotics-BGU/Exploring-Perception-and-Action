@@ -162,9 +162,7 @@ for k = 1:length(forvector)
         
         disp(i)
     end%end of running of k's trials
-    
-    AllFeatures = AllFeatures(1:end - err, :, :);
-    
+        
     %replace following directory with desired location for saving data
     cd C:\Users\hanna\OneDrive\MATLAB\lab\PhD\Perception_and_GF_prediction\DL_perception\OnlyInSurface\ParticipantMatsAndVecs\final;
     save(['Features_', filename(1:end-4)], 'AllFeatures');
