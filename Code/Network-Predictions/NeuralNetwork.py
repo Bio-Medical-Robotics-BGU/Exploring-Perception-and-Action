@@ -150,8 +150,8 @@ for run in Runs:
       refs = scipy.io.loadmat(f'StandardSignals_SN{i}.mat')
       refs = refs['AllRefSigs']
      
-      comps = comps[:, :, sigs]
-      refs = refs[:, :, sigs]
+      comps = comps[:192, :, sigs]
+      refs = refs[:192, :, sigs]
       
       outs = model.predict([comps, refs])
       preds = np.zeros_like(outs)
