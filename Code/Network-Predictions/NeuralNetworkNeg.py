@@ -4,9 +4,7 @@ or without the negative stretch session'''
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import LSTM, Dense, Dropout, BatchNormalization, Input, Subtract, Bidirectional
 from tensorflow.keras.regularizers import l2
-import matplotlib.pyplot as plt
 from tensorflow.keras.callbacks import LearningRateScheduler
-import sklearn.metrics as sk
 import tensorflow as tf
 import tensorflow.keras.backend as K
 from keras_self_attention import SeqSelfAttention
