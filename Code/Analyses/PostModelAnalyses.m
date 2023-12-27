@@ -72,7 +72,7 @@ for f = 1:10 %run over the 10 folds
 
         %getting predictions
         cd(saved_path)
-        preds = load(['Preds_SN', num2str(participants(p)), model_name, '.mat']);
+        preds = load(['Preds_SN', num2str(participants(p)), '_', model_name, '.mat']);
         preds = preds.Preds;
 
         cd(project_path)
