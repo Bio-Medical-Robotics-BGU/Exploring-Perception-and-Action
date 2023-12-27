@@ -109,47 +109,52 @@ for Split in np.arange(1, k + 1):
             TrainKCompsNeg = np.concatenate((TrainKCompsNeg, kcomps), axis = 0)
             TrainTdGainsNeg = np.concatenate((TrainTdGainsNeg, tdgains), axis = 0)
     
-    #test
+
     for i in TestParticipants:
         print(i)
         #signals
         if Dataset == 1 or Dataset == 2:
             sigs_comp = scipy.io.loadmat(f'CompSignals_SN{i}.mat')
+            sigs_comp = sigs_comp['AllCompSigs'][:192]
         else:
             #for both positive and negative stretch:
             sigs_comp = scipy.io.loadmat(f'CompSignals_BothStretch_SN{i}.mat') 
-        sigs_comp = sigs_comp['AllCompSigs']
+            sigs_comp = sigs_comp['AllCompSigs']
       
         if Dataset == 1 or Dataset == 2:
             sigs_ref = scipy.io.loadmat(f'StandardSignals_SN{i}.mat')
+            sigs_ref = sigs_ref['AllRefSigs'][:192]
         else:
             #for both positive and negative stretch:
             sigs_ref = scipy.io.loadmat(f'StandardSignals_BothStretch_SN{i}.mat') 
-        sigs_ref = sigs_ref['AllRefSigs']
+            sigs_ref = sigs_ref['AllRefSigs']
       
         #participant answers
         if Dataset == 1 or Dataset == 2:
             panswers = scipy.io.loadmat(f'Labels_SN{i}.mat')
+            panswers = panswers['AllPlabels'][:192]
         else:
             #for both positive and negative stretch:
             panswers = scipy.io.loadmat(f'Labels_BothStretch_SN{i}.mat') 
-        panswers = panswers['AllPlabels']
+            panswers = panswers['AllPlabels']
       
         #Kcomps
         if Dataset == 1 or Dataset == 2:
             kcomps = scipy.io.loadmat(f'Kcomps_SN{i}.mat')
+            kcomps = kcomps['AllKcomps'][:192]
         else:
             #for both positive and negative stretch:
             kcomps = scipy.io.loadmat(f'Kcomps_BothStretch_SN{i}.mat') 
-        kcomps = kcomps['AllKcomps']
+            kcomps = kcomps['AllKcomps']
       
         #Tactor discplacement gains
         if Dataset == 1 or Dataset == 2:
             tdgains = scipy.io.loadmat(f'TdGains_SN{i}.mat')
+            tdgains = tdgains['AllTdGains'][:192]
         else:
             #for both positive and negative stretch:
             tdgains = scipy.io.loadmat(f'TdGains_BothStretch_SN{i}.mat') 
-        tdgains = tdgains['AllTdGains']
+            tdgains = tdgains['AllTdGains']
       
         assert (sigs_comp.shape[0] == sigs_ref.shape[0] == len(panswers) == len(kcomps) == len(tdgains))
       
