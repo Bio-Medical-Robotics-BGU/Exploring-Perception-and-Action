@@ -148,7 +148,7 @@ for run in Runs:
     model.summary()
 
     history = model.fit([AllTrainSignalsComp, AllTrainSignalsRef], AllTrainPlabels, 
-                        Testidation_data = ([AllTestSignalsComp, AllTestSignalsRef], AllTestPlabels), 
+                        validation_data = ([AllTestSignalsComp, AllTestSignalsRef], AllTestPlabels), 
                         batch_size = 512, 
                         shuffle = True, epochs = 50, verbose = 1, callbacks = callbacks)
    
