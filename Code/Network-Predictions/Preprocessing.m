@@ -39,7 +39,7 @@ for k = 1:length(forvector) %loop that runs over all the participants
 
             %The next line defines that only the data from force or positive stretch trials
             % are included. If the negative stretch trials are desired (Dataset 3), 
-            % comment out following line and the "end" in line 181:
+            % comment out following line and the "end" in line 183:
             if (strcmp(dt_gain, '0') || strcmp(dt_gain, '80'))
                 k_standard = trial_data.RefStiffnessVal;
                 k_comp = trial_data.CompStiffnessVal;
