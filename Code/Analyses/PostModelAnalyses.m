@@ -7,14 +7,14 @@
 
 %replace following directory with the location of the saved network
 %predictions
-saved_path = 'C:\Users\hanna\OneDrive\lab\PhD\python\PerceptionActionInSurface\Final\saved_predictions';
+saved_path = 'D:\OneDrive\PerceptionAction\saved_predictions';
 
 %replace following directory with the location of the saved preprocessed
 %data
-data_path = 'C:\Users\hanna\OneDrive\MATLAB\lab\PhD\Perception_and_GF_prediction\DL_perception\OnlyInSurface\ParticipantMatsAndVecs\final';
+data_path = 'D:\OneDrive\PerceptionAction\Preprocessed';
 
 % replace following directory with the location of the codes
-project_path = 'C:\Users\hanna\OneDrive\MATLAB\lab\PhD\Perception_and_GF_prediction\DL_perception\OnlyInSurface\final';
+project_path = 'D:\OneDrive\PerceptionAction\Code\Analyses';
 
 %load the splits
 folds = load('TestIndsSplit.mat');
@@ -23,9 +23,13 @@ folds = load('TestIndsSplit.mat');
 fns = fieldnames(folds);
 
 %getting the model type from user
-model_name = input('What network would you like (e.g., which signals or parts of the network are included?) \n' ,'s');
+% model_name = input('What network would you like (e.g., which signals or parts of the network are included?) \n' ,'s');
+model_name = 'MeanVel';
+runs = input('Which predictions would you like to use? \n 1. Model \n 2. Network \n');
 
-Run = input('Which number run would you like? \n', 's');
+if runs == 2
+    Run = input('Which number run would you like? \n', 's');
+end
 
 %for PSE and JND errors, and regression
 RealPSEs = [];
@@ -57,7 +61,8 @@ for f = 1:10 %run over the 10 folds
     FoldPreds = [];
     %running over the participants of the fold
     for p = 1:length(participants)
-      
+
+     
         count = count + 1;
 
         if (participants(p) == 10 || participants(p) == 17)
@@ -75,7 +80,11 @@ for f = 1:10 %run over the 10 folds
 
         %getting predictions
         cd(saved_path)
-        preds = load(['Preds_SN', num2str(participants(p)), '_', model_name, '_Run', Run, '.mat']);
+        if runs == 2
+            preds = load(['Preds_SN', num2str(participants(p)), '_', model_name, '_Run', Run, '.mat']);
+        else
+            preds = load(['Preds_SN', num2str(participants(p)), '_', model_name, '.mat']);
+        end
         preds = preds.Preds;
 
         cd(project_path)
