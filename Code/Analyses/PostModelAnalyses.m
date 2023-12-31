@@ -57,9 +57,7 @@ for f = 1:10 %run over the 10 folds
     FoldPreds = [];
     %running over the participants of the fold
     for p = 1:length(participants)
-        a=participants(p)
-    
-     
+      
         count = count + 1;
 
         if (participants(p) == 10 || participants(p) == 17)
