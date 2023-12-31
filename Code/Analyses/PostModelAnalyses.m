@@ -7,14 +7,14 @@
 
 %replace following directory with the location of the saved network
 %predictions
-saved_path = 'C:\Users\hanna\OneDrive\lab\PhD\python\PerceptionActionInSurface\Final\saved_predictions';
+saved_path = 'D:\OneDrive\PerceptionAction\saved_predictions';
 
 %replace following directory with the location of the saved preprocessed
 %data
-data_path = 'C:\Users\hanna\OneDrive\MATLAB\lab\PhD\Perception_and_GF_prediction\DL_perception\OnlyInSurface\ParticipantMatsAndVecs\final';
+data_path = 'D:\OneDrive\PerceptionAction\Preprocessed';
 
 % replace following directory with the location of the codes
-project_path = 'C:\Users\hanna\OneDrive\MATLAB\lab\PhD\Perception_and_GF_prediction\DL_perception\OnlyInSurface\final';
+project_path = 'D:\OneDrive\PerceptionAction\Code\Analyses';
 
 %load the splits
 folds = load('TestIndsSplit.mat');
@@ -23,7 +23,11 @@ folds = load('TestIndsSplit.mat');
 fns = fieldnames(folds);
 
 %getting the model type from user
-model_name = input('What network would you like (e.g., which signals or parts of the network are included?) \n' ,'s');
+% model_name = input('What network would you like (e.g., which signals or parts of the network are included?) \n' ,'s');
+% model_name = 'PositionVelocityAccelerationGripForce';
+model_name = 'PositionAccelerationGripForce';
+
+Run = input('Which number run would you like? \n', 's');
 
 %for PSE and JND errors, and regression
 RealPSEs = [];
@@ -50,12 +54,15 @@ for f = 1:10 %run over the 10 folds
     %getting the participants in this fold
     participants = folds.(fns{f});
     
+    
     FoldLabels = [];
     FoldPreds = [];
     %running over the participants of the fold
     for p = 1:length(participants)
-
-        count = count + 1; 
+        a=participants(p)
+    
+     
+        count = count + 1;
 
         if (participants(p) == 10 || participants(p) == 17)
             LargeErrors = [LargeErrors; count];
@@ -72,16 +79,16 @@ for f = 1:10 %run over the 10 folds
 
         %getting predictions
         cd(saved_path)
-        preds = load(['Preds_SN', num2str(participants(p)), '_', model_name, '.mat']);
+        preds = load(['Preds_SN', num2str(participants(p)), '_', model_name, '_Run', Run, '.mat']);
         preds = preds.Preds;
 
         cd(project_path)
         [pses, pred_pses, jnds, pred_jnds] = PsychometricMats(KComps, TdGains, Labels, preds);
 
         RealPSEs = [RealPSEs; pses];
-        PredPSEs = [PredPSEs; pses];
-        RealJNDs = [RealJNDs; pses];
-        PredJNDS = [PredJNDS; pses];
+        PredPSEs = [PredPSEs; pred_pses];
+        RealJNDs = [RealJNDs; jnds];
+        PredJNDS = [PredJNDS; pred_jnds];
 
         AllLabels = [AllLabels; Labels];
         AllPredictions = [AllPredictions; preds];
@@ -103,9 +110,8 @@ MeanRunAcc = mean(Accuracies);
 PSE_ForceErrors = RealPSEs(:, 1) - PredPSEs(:, 1);
 PSE_StretchErrors = RealPSEs(:, 2) - PredPSEs(:, 2);
 
-mes = ['PSE average errors and standard deviations are: \n Force condition ', num2str(mean(PSE_ForceErrors))...
-    ', ' num2str(std(PSE_ForceErrors)), '\n Stretch condition ', num2str(mean(PSE_StretchErrors)),...
-    ', ' num2str(std(PSE_StretchErrors))];
+mes = ['PSE average errors are: \n Force condition ', num2str(mean(PSE_ForceErrors))...
+    '\n Stretch condition ', num2str(mean(PSE_StretchErrors))];
 
 fprintf(mes)
 
@@ -139,9 +145,8 @@ box on
 JND_ForceErrors = RealJNDs(:, 1) - PredJNDS(:, 1);
 JND_StretchErrors = RealJNDs(:, 2) - PredJNDS(:, 2);
 
-mes2 = ['JND average errors and standard deviations are: \n Force condition ', num2str(mean(JND_ForceErrors))...
-    ', ' num2str(std(JND_ForceErrors)), '\n Stretch condition ', num2str(mean(JND_StretchErrors)),...
-    ', ' num2str(std(JND_StretchErrors))];
+mes2 = ['JND average errors are: \n Force condition ', num2str(mean(JND_ForceErrors))...
+    '\n Stretch condition ', num2str(mean(JND_StretchErrors))];
 
 fprintf(mes2)
 
@@ -328,7 +333,7 @@ for i = 1:length(Kcomps1)
 end
 
 % Skin Stretch
-UniqueK = unique(Kcomps);
+UniqueK = unique(AllKComps);
 TotalCounter2 = zeros(size(UniqueK));
 ErrorCounter2 = zeros(size(UniqueK));
 CorrectCounter2 = zeros(size(UniqueK));
@@ -338,7 +343,7 @@ AllLabels2 = AllLabels(find(AllTdgains == 80));
 Kcomps2 = AllKComps(find(AllTdgains == 80));
 
 for i = 1:length(Kcomps2)
-    ind = find(UniqueK == Kcomps(i));
+    ind = find(UniqueK == Kcomps2(i));
     TotalCounter2(ind) = TotalCounter2(ind) + 1;
     
     if AllPreds2(i) == AllLabels2(i) %correct
@@ -413,7 +418,7 @@ CorrectCounter22 = zeros(size(UniqueK));
 AllLabels22 = AllRlabels(find(AllTdgains == 80));
 
 for i = 1:length(Kcomps2)
-    ind = find(UniqueK == Kcomps(i));
+    ind = find(UniqueK == Kcomps2(i));
     TotalCounter22(ind) = TotalCounter22(ind) + 1;
     
     if AllLabels22(i) == AllLabels2(i) %correct
@@ -429,7 +434,7 @@ ErrorCounter12 = ErrorCounter11 + ErrorCounter22;
 TotalCounter12 = TotalCounter11 + TotalCounter22;
 CorrectCounter12 = CorrectCounter11 + CorrectCounter22;
 
-%% plotting
+% plotting
 %All trials (Fig. 7(a))
 figure
 bar(UniqueK, 100*(ErrorCounter12./TotalCounter12), 'facecolor', [1 1 1])
