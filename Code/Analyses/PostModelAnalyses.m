@@ -7,14 +7,14 @@
 
 %replace following directory with the location of the saved network
 %predictions
-saved_path = 'D:\OneDrive\PerceptionAction\saved_predictions';
+saved_path = 'C:\Users\hanna\OneDrive\lab\PhD\python\PerceptionActionInSurface\Final\saved_predictions';
 
 %replace following directory with the location of the saved preprocessed
 %data
-data_path = 'D:\OneDrive\PerceptionAction\Preprocessed';
+data_path = 'C:\Users\hanna\OneDrive\MATLAB\lab\PhD\Perception_and_GF_prediction\DL_perception\OnlyInSurface\ParticipantMatsAndVecs\final';
 
 % replace following directory with the location of the codes
-project_path = 'D:\OneDrive\PerceptionAction\Code\Analyses';
+project_path = 'C:\Users\hanna\OneDrive\MATLAB\lab\PhD\Perception_and_GF_prediction\DL_perception\OnlyInSurface\final';
 
 %load the splits
 folds = load('TestIndsSplit.mat');
@@ -23,9 +23,7 @@ folds = load('TestIndsSplit.mat');
 fns = fieldnames(folds);
 
 %getting the model type from user
-% model_name = input('What network would you like (e.g., which signals or parts of the network are included?) \n' ,'s');
-% model_name = 'PositionVelocityAccelerationGripForce';
-model_name = 'PositionAccelerationGripForce';
+model_name = input('What network would you like (e.g., which signals or parts of the network are included?) \n' ,'s');
 
 Run = input('Which number run would you like? \n', 's');
 
