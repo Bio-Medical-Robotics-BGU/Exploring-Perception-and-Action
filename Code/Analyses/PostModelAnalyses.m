@@ -177,8 +177,8 @@ y_fit2 = sim2(1) + sim2(2)*sorted_reals2;
 figure
 hold on
 plot(sorted_reals1, sorted_preds1, '*', 'linewidth', 0.5, 'markersize', 6, 'color', [0.5 0.5 0.5])
-plot(AllReals(13), AllPreds(13), '*', 'linewidth', 0.5, 'markersize', 6, 'color', [109 202 16]./255)
-plot(AllReals(14), AllPreds(14), '*', 'linewidth', 0.5, 'markersize', 6, 'color', [109 202 16]./255)
+plot(AllReals(LargeErrors(1)), AllPreds(LargeErrors(1)), '*', 'linewidth', 0.5, 'markersize', 6, 'color', [109 202 16]./255)
+plot(AllReals(LargeErrors(2)), AllPreds(LargeErrors(2)), '*', 'linewidth', 0.5, 'markersize', 6, 'color', [109 202 16]./255)
 p1 = plot([0; sorted_reals2], [sim2(1); y_fit2], 'linewidth', 1.5, 'color', 'k');
 p2 = plot([0; sorted_reals1], [sim1(1); y_fit1], 'linewidth', 1.5, 'color', [109 202 16]./255, 'linestyle', '--');
 
