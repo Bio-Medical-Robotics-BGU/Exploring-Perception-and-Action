@@ -11,7 +11,6 @@ MatPath = r"C:\Users\hanna\OneDrive\MATLAB\lab\PhD\Perception_and_GF_prediction\
 
 # Replace the following directory with the location to which to save the model responses
 ProjectPath = r"C:\Users\hanna\OneDrive\lab\PhD\python\PerceptionActionInSurface\Final"
-DatasetPath = os.path.join(ProjectPath, 'DatasetsFolds')
 
 # %% Negative
 Participants = np.arange(1, 41)
@@ -55,7 +54,7 @@ for i in Participants:
   mdic3 = {"Preds": MeanVelAnswers, "label": "Preds"}
   mdic4 = {"Preds": MaxGFAnswers, "label": "Preds"}
   
-  os.chdir(DatasetPath)  
+  os.chdir(ProjectPath)  
   scipy.io.savemat(f'Preds_SN{i}_MaxDist.mat', mdic1)
   scipy.io.savemat(f'Preds_SN{i}_MaxVel.mat', mdic2)
   scipy.io.savemat(f'Preds_SN{i}_MeanVel.mat', mdic3)
