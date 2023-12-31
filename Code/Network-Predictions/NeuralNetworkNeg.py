@@ -177,7 +177,7 @@ for run in Runs:
       #saving predictions      
       os.chdir(save_path)  
       
-      scipy.io.savemat(f'Preds_SN{i}_{options[stretch - 1]}.mat', mdic1)
+      scipy.io.savemat(f'Preds_SN{i}_{options[stretch - 1]}_Run{run}.mat', mdic1)
 
 
 
