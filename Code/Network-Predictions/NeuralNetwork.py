@@ -15,14 +15,14 @@ import scipy.io
 # %% Paths
 
 # Replace the following directory with the location of the saved preprocessed data
-MatPath = r"C:\Users\hanna\OneDrive\MATLAB\lab\PhD\Perception_and_GF_prediction\DL_perception\OnlyInSurface\ParticipantMatsAndVecs\final"
+MatPath = r"D:\OneDrive\PerceptionAction\Preprocessed"
 
 # Replace the following directory with the location where the datasets are saved
-ProjectPath = r"C:\Users\hanna\OneDrive\lab\PhD\python\PerceptionActionInSurface\Final"
+ProjectPath = r"D:\OneDrive\PerceptionAction\Data"
 DatasetPath = os.path.join(ProjectPath, 'DatasetsFolds')
 
 # Replace the following directory with the location where the model predictions should be saved
-save_path = r"C:\Users\hanna\OneDrive\lab\PhD\python\PerceptionActionInSurface\Final\saved_predictions"
+save_path = r"D:\OneDrive\PerceptionAction\saved_predictions"
 
 Splits = np.arange(1, 11) #for the k-fold validation
 Runs = np.arange(1, 6) #for the 5 repititions
@@ -164,7 +164,7 @@ for run in Runs:
       #saving predictions      
       os.chdir(save_path)            
 
-      scipy.io.savemat(f'Preds_SN{i}_{included}.mat', mdic1)
+      scipy.io.savemat(f'Preds_SN{i}_{included}_Run{run}.mat', mdic1)
 
 
 
