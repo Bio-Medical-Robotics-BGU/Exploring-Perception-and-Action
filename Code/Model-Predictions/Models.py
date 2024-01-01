@@ -7,10 +7,10 @@ import scipy.io
 
 # %% Paths
 # Replace the following directory with the location of the saved preprocessed data
-MatPath = r"C:\Users\hanna\OneDrive\MATLAB\lab\PhD\Perception_and_GF_prediction\DL_perception\OnlyInSurface\ParticipantMatsAndVecs\final"
+MatPath = r"D:\OneDrive\PerceptionAction\Preprocessed"
 
 # Replace the following directory with the location to which to save the model responses
-ProjectPath = r"C:\Users\hanna\OneDrive\lab\PhD\python\PerceptionActionInSurface\Final"
+ProjectPath = r"D:\OneDrive\PerceptionAction\saved_predictions"
 
 # %% Negative
 Participants = np.arange(1, 41)
