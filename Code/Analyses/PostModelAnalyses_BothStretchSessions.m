@@ -4,17 +4,19 @@
 
 %replace following directory with the location of the saved network
 %predictions
-saved_path = 'C:\Users\hanna\OneDrive\lab\PhD\python\PerceptionActionInSurface\Final\saved_predictions';
+saved_path = 'D:\OneDrive\PerceptionAction\saved_predictions';
 
 %replace following directory with the location of the saved preprocessed
 %data
-data_path = 'C:\Users\hanna\OneDrive\MATLAB\lab\PhD\Perception_and_GF_prediction\DL_perception\OnlyInSurface\ParticipantMatsAndVecs\final';
+data_path = 'D:\OneDrive\PerceptionAction\Preprocessed';
 
 % replace following directory with the location of the codes
-project_path = 'C:\Users\hanna\OneDrive\MATLAB\lab\PhD\Perception_and_GF_prediction\DL_perception\OnlyInSurface\final';
+project_path = 'D:\OneDrive\PerceptionAction\Code\Analyses';
 
 %load the splits
 folds = load('TestIndsSplit_AllParticipants.mat');
+
+Run = input('Which number run would you like? \n', 's');
 
 %getting the field names of the struct
 fns = fieldnames(folds);
@@ -53,28 +55,23 @@ for f = 1:10 %run over the 10 folds
         Labels = Labels.AllPlabels;
         
         KComps = load(['Kcomps_BothStretch_SN', num2str(participants(p)), '.mat']);
-        KComps = KComps.AllKcomps(1:192);
+        KComps = KComps.AllKcomps;
         
         TdGains = load(['TdGains_BothStretch_SN', num2str(participants(p)), '.mat']);
-        TdGains = TdGains.AllTdGains(1:192);
+        TdGains = TdGains.AllTdGains;
 
         %getting predictions
         cd(saved_path)
-        preds = load(['Preds_SN', num2str(participants(p)), '_BothStretch.mat']);
+        preds = load(['Preds_SN', num2str(participants(p)), '_BothStretch_Run', Run, '.mat']);
         preds = preds.Preds;
 
         cd(project_path)
-        [pses, pred_pses, jnds, pred_jnds] = PsychometricMats(KComps, TdGains, Labels, preds);
+        [pses, pred_pses, jnds, pred_jnds] = PsychometricMatsBothStretch(KComps, TdGains, Labels, preds);
 
         RealPSEs = [RealPSEs; pses];
-        PredPSEs = [PredPSEs; pses];
-        RealJNDs = [RealJNDs; pses];
-        PredJNDS = [PredJNDS; pses];
-
-        AllLabels = [AllLabels; Labels];
-        AllPredictions = [AllPredictions; preds];
-        AllTdgains = [AllTdgains; TdGains];
-        AllKComps = [AllKComps; KComps];
+        PredPSEs = [PredPSEs; pred_pses];
+        RealJNDs = [RealJNDs; jnds];
+        PredJNDS = [PredJNDS; pred_jnds];
 
         FoldLabels = [FoldLabels; Labels];
         FoldPreds = [FoldPreds; preds];
@@ -93,12 +90,11 @@ PSE_StretchErrors = RealPSEs(:, 2) - PredPSEs(:, 2);
 PSE_ForceErrors2 = RealPSEs(:, 3) - PredPSEs(:, 3);
 PSE_NegStretchErrors = RealPSEs(:, 4) - PredPSEs(:, 4);
 
-mes = ['PSE average errors and standard deviations are: \n Force condition in positive stretch session ',...
-    num2str(mean(PSE_ForceErrors)), ', ', num2str(std(PSE_ForceErrors)), '\n Positive stretch condition ',...
-    num2str(mean(PSE_StretchErrors)), ', ', num2str(std(PSE_StretchErrors)),...
-    '\n Force condition in negative stretch session ', num2str(mean(PSE_ForceErrors2)), ', ',...
-    num2str(std(PSE_ForceErrors2)), '\n Negative stretch condition ', num2str(mean(PSE_NegStretchErrors)),...
-    ', ', num2str(std(PSE_NegStretchErrors))];
+mes = ['PSE average errors are: \n Force condition in positive stretch session ',...
+    num2str(mean(PSE_ForceErrors)), '\n Positive stretch condition ',...
+    num2str(mean(PSE_StretchErrors)),...
+    '\n Force condition in negative stretch session ', num2str(mean(PSE_ForceErrors2)),...
+    '\n Negative stretch condition ', num2str(mean(PSE_NegStretchErrors))];
 
 fprintf(mes)
 
