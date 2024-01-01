@@ -153,6 +153,9 @@ for run in Runs:
         #standard
         refs = scipy.io.loadmat(f'StandardSignals_SN{i}.mat')
         refs = refs['AllRefSigs']
+        
+        comps = comps[:192, :, sigs]
+        refs = refs[:192, :, sigs]
      
       elif stretch == 2:
         #comparison
@@ -162,9 +165,9 @@ for run in Runs:
         #standard
         refs = scipy.io.loadmat(f'StandardSignals_BothStretch_SN{i}.mat')
         refs = refs['AllRefSigs']
-        
-      comps = comps[:, :, sigs]
-      refs = refs[:, :, sigs]
+    
+        comps = comps[:, :, sigs]
+        refs = refs[:, :, sigs]
       
       outs = model.predict([comps, refs])
       preds = np.zeros_like(outs)
