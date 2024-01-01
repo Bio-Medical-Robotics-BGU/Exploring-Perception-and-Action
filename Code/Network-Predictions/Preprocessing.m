@@ -24,7 +24,7 @@ for k = 1:length(forvector) %loop that runs over all the participants
     filename = ['SN', num2str(h), '.mat'];
 
     %in following line - replace directory to data location
-    cd C:\Users\hanna\OneDrive\MATLAB\lab\First_Degree\NegativeStretch;
+    cd D:\OneDrive\PerceptionAction\Data\Data;
 
     data = load(filename);
     data = data.M;
@@ -189,7 +189,7 @@ for k = 1:length(forvector) %loop that runs over all the participants
     end%end of running of k's trials
 
     %replace following directory with desired location for saving data
-    cd C:\Users\hanna\OneDrive\MATLAB\lab\PhD\Perception_and_GF_prediction\DL_perception\OnlyInSurface\ParticipantMatsAndVecs\final;
+    cd D:\OneDrive\PerceptionAction\Preprocessed;
     save(['CompSignals_SN', num2str(h)], 'AllCompSigs')
     save(['StandardSignals_SN', num2str(h)], 'AllRefSigs')
     save(['Labels_SN', num2str(h)], 'AllPlabels')
