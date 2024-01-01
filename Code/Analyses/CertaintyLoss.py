@@ -1,33 +1,25 @@
 ''' This code takes one of the runs for a network and examines the certainty values of the predictions for each of the
 folds. This code creates Fig. 7 in the manuscript.'''
 # %% Imports 
-from tensorflow.keras.models import Model
-from tensorflow.keras.layers import LSTM, Dense, Dropout, BatchNormalization, Input, Subtract, Bidirectional
-from tensorflow.keras.regularizers import l2
 import matplotlib.pyplot as plt
-from tensorflow.keras.callbacks import LearningRateScheduler
-import sklearn.metrics as sk
-import tensorflow as tf
-import tensorflow.keras.backend as K
 from keras_self_attention import SeqSelfAttention
 from tensorflow.keras.models import load_model
 
 import os
 import numpy as np
-import scipy.io
 
 plt.rcParams["font.family"] = "Times New Roman"
 
 # %% Paths
 # Replace the following directory with the location of the saved preprocessed data
-MatPath = r"C:\Users\hanna\OneDrive\MATLAB\lab\PhD\Perception_and_GF_prediction\DL_perception\OnlyInSurface\ParticipantMatsAndVecs\final"
+MatPath = r"D:\OneDrive\PerceptionAction\Preprocessed"
 
 # Replace the following directory with the location where the datasets are saved
-ProjectPath = r"C:\Users\hanna\OneDrive\lab\PhD\python\PerceptionActionInSurface\Final"
+ProjectPath = r"D:\OneDrive\PerceptionAction\Data"
 DatasetPath = os.path.join(ProjectPath, 'DatasetsFolds')
 
-# Replace the following directory with the location where the models are saved
-save_path = r"C:\Users\hanna\OneDrive\lab\PhD\python\PerceptionActionInSurface\Final\saved_predictions"
+# Replace the following directory with the location where the model predictions should be saved
+save_path = r"D:\OneDrive\PerceptionAction\saved_predictions"
 
 # %% Setting up model names
 run = int(input("Which run would you like to use (number between 1 - 5)? \n"))
@@ -35,7 +27,7 @@ run = int(input("Which run would you like to use (number between 1 - 5)? \n"))
 ModelNames = {}
 
 for f in range(1, 11):
-  ModelNames[f'Fold{f}'] = f'Network_PositionVelocityAccelerationGripForce_Fold{f}_Run{run}.h5'
+  ModelNames[f'Fold{f}'] = f'Network_PositionVelocityAccelerationGripForce_Split{f}_Run{run}.h5'
 
 
 # %% Getting predictions for each fold
@@ -168,44 +160,14 @@ for j, k in enumerate(kcomps):
   CorrectSSCertsVec[j] = np.mean(CorrectSSCerts[f'k{k}'])
   ErrorSSCertsCertsVec[j] = np.mean(ErrorSSCerts[f'k{k}'])
   
-# %% choosing who to plot this time - FINISH
-fin = input("Hanna - did you finish plots?")
-CorrectCertsRel = CorrectSSCertsVec
-ErrorCertsRel = ErrorSSCertsCertsVec
 
-# %% plotting
-plt.figure()
-p1 = plt.scatter(0, CorrectCertsRel[0], c = 'green', marker = '*')
-p2 = plt.scatter(0, ErrorCertsRel[0], c = 'red', marker = 's')
-
-plt.scatter(np.arange(len(kcomps) - 1) + 1, CorrectCertsRel[1:], c = 'green', marker = '*')
-plt.scatter(np.arange(len(kcomps) - 1) + 1, ErrorCertsRel[1:], c = 'red', marker = 's')
-
-plt.legend([p1, p2], ['Correct', 'Errors'])
-
-plt.xlim([-1.1, 12.1])
-plt.ylim([0, 1])
-plt.plot(np.arange(-1.1, 12.2, 0.1), 0.5*np.ones((len(np.arange(-1.1, 12.2, 0.1))),), linestyle='dashed', c = 'black', linewidth = 0.5)
-
-plt.plot(5.5*np.ones((len(np.arange(0, 1.1, 0.1))),), np.arange(0, 1.1, 0.1), linestyle = ':', c = [0.2, 0.2, 0.2], linewidth = 0.5)
-
-plt.xticks(np.arange(len(kcomps)), labels = kcomps, fontsize = 14)
-plt.yticks(np.arange(0, 1.1, 0.1), fontsize = 14)
-
-# plt.xlabel('Comparison Stiffness Level [N/m]',  fontsize = 14)
-# plt.ylabel('Average Network Output',  fontsize = 14)
-
-# %% plotting with different colors
 # %% all trials
-CorrectCertsRel = CorrectCertsVec
-ErrorCertsRel = ErrorCertsVec
-
 plt.figure()
-p1 = plt.scatter(0, CorrectCertsRel[0], c = np.array([0, 0, 0])/255, marker = '*')
-p2 = plt.scatter(0, ErrorCertsRel[0], c = np.array([166, 166, 166])/255, marker = 's')
+p1 = plt.scatter(0, CorrectCertsVec[0], c = np.array([0, 0, 0])/255, marker = '*')
+p2 = plt.scatter(0, ErrorCertsVec[0], c = np.array([166, 166, 166])/255, marker = 's')
 
-plt.scatter(np.arange(len(kcomps) - 1) + 1, CorrectCertsRel[1:], c = np.array([0, 0, 0])/255, marker = '*')
-plt.scatter(np.arange(len(kcomps) - 1) + 1, ErrorCertsRel[1:], c = np.array([166, 166, 166])/255, marker = 's')
+plt.scatter(np.arange(len(kcomps) - 1) + 1, CorrectCertsVec[1:], c = np.array([0, 0, 0])/255, marker = '*')
+plt.scatter(np.arange(len(kcomps) - 1) + 1, ErrorCertsVec[1:], c = np.array([166, 166, 166])/255, marker = 's')
 
 plt.legend([p1, p2], ['Correct', 'Errors'])
 
@@ -219,20 +181,12 @@ plt.xticks(np.arange(len(kcomps)), labels = kcomps, fontsize = 14)
 plt.yticks(np.arange(0, 1.1, 0.1), fontsize = 14)
 
 # %% force trials
-CorrectCertsRel = CorrectForceCertsVec
-ErrorCertsRel = ErrorForceCertsVec
-
 plt.figure()
-# p1 = plt.scatter(0, CorrectCertsRel[0], c = np.array([175, 126, 5])/255, marker = '*')
-# p2 = plt.scatter(0, ErrorCertsRel[0], c = np.array([249, 186, 33])/255, marker = 's')
+p1 = plt.scatter(0, CorrectForceCertsVec[0], c = np.array([0, 0, 0])/255, marker = '*')
+p2 = plt.scatter(0, ErrorForceCertsVec[0], c = np.array([166, 166, 166])/255, marker = 's')
 
-# plt.scatter(np.arange(len(kcomps) - 1) + 1, CorrectCertsRel[1:], c = np.array([175, 126, 5])/255, marker = '*')
-# plt.scatter(np.arange(len(kcomps) - 1) + 1, ErrorCertsRel[1:], c = np.array([249, 186, 33])/255, marker = 's')
-p1 = plt.scatter(0, CorrectCertsRel[0], c = np.array([0, 0, 0])/255, marker = '*')
-p2 = plt.scatter(0, ErrorCertsRel[0], c = np.array([166, 166, 166])/255, marker = 's')
-
-plt.scatter(np.arange(len(kcomps) - 1) + 1, CorrectCertsRel[1:], c = np.array([0, 0, 0])/255, marker = '*')
-plt.scatter(np.arange(len(kcomps) - 1) + 1, ErrorCertsRel[1:], c = np.array([166, 166, 166])/255, marker = 's')
+plt.scatter(np.arange(len(kcomps) - 1) + 1, CorrectForceCertsVec[1:], c = np.array([0, 0, 0])/255, marker = '*')
+plt.scatter(np.arange(len(kcomps) - 1) + 1, ErrorForceCertsVec[1:], c = np.array([166, 166, 166])/255, marker = 's')
 
 plt.legend([p1, p2], ['Correct', 'Errors'])
 
@@ -246,20 +200,12 @@ plt.xticks(np.arange(len(kcomps)), labels = kcomps, fontsize = 14)
 plt.yticks(np.arange(0, 1.1, 0.1), fontsize = 14)
 
 # %% ss trials
-CorrectCertsRel = CorrectSSCertsVec
-ErrorCertsRel = ErrorSSCertsCertsVec
-
 plt.figure()
-# p1 = plt.scatter(0, CorrectCertsRel[0], c = np.array([0, 67, 112])/255, marker = '*')
-# p2 = plt.scatter(0, ErrorCertsRel[0], c = np.array([0, 121, 204])/255, marker = 's')
+p1 = plt.scatter(0, CorrectSSCertsVec[0], c = np.array([0, 0, 0])/255, marker = '*')
+p2 = plt.scatter(0, ErrorSSCertsCertsVec[0], c = np.array([166, 166, 166])/255, marker = 's')
 
-# plt.scatter(np.arange(len(kcomps) - 1) + 1, CorrectCertsRel[1:], c = np.array([0, 67, 112])/255, marker = '*')
-# plt.scatter(np.arange(len(kcomps) - 1) + 1, ErrorCertsRel[1:], c = np.array([0, 121, 204])/255, marker = 's')
-p1 = plt.scatter(0, CorrectCertsRel[0], c = np.array([0, 0, 0])/255, marker = '*')
-p2 = plt.scatter(0, ErrorCertsRel[0], c = np.array([166, 166, 166])/255, marker = 's')
-
-plt.scatter(np.arange(len(kcomps) - 1) + 1, CorrectCertsRel[1:], c = np.array([0, 0, 0])/255, marker = '*')
-plt.scatter(np.arange(len(kcomps) - 1) + 1, ErrorCertsRel[1:], c = np.array([166, 166, 166])/255, marker = 's')
+plt.scatter(np.arange(len(kcomps) - 1) + 1, CorrectSSCertsVec[1:], c = np.array([0, 0, 0])/255, marker = '*')
+plt.scatter(np.arange(len(kcomps) - 1) + 1, ErrorSSCertsCertsVec[1:], c = np.array([166, 166, 166])/255, marker = 's')
 
 plt.legend([p1, p2], ['Correct', 'Errors'])
 
