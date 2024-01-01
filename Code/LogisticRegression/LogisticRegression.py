@@ -65,7 +65,7 @@ for Split in Splits:
     
     subbed = features_ref - features_comp 
     preds = logisticRegr.predict(subbed)
-    
+    preds = np.reshape(preds, (192,1))    
 
     mdic1 = {"Preds": preds, "label": "Preds"}
 
