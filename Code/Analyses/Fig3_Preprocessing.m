@@ -7,7 +7,7 @@ k = 8; %take a signal from participant 8
 filename = ['SN', num2str(k), '.mat'];
 
 %in following line - replace directory to data location
-cd C:\Users\hanna\OneDrive\MATLAB\lab\First_Degree\NegativeStretch;
+cd D:\OneDrive\PerceptionAction\Data\Data;
 
 data = load(filename);
 data = data.M;
