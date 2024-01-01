@@ -6,11 +6,11 @@ import numpy as np
 import scipy.io
 
 # Paths
-# Replace the following directory with the location of the saved features
-MatPath = r"C:\Users\hanna\OneDrive\MATLAB\lab\PhD\Perception_and_GF_prediction\DL_perception\OnlyInSurface\ParticipantMatsAndVecs\final"
+# Replace the following directory with the location of the saved preprocessed data
+MatPath = r"D:\OneDrive\PerceptionAction\Preprocessed"
 
 # Replace the following directory with the location of the saved fold indices, and to which the datasets will be saved
-ProjectPath = r"C:\Users\hanna\OneDrive\lab\PhD\python\PerceptionActionInSurface\Final"
+ProjectPath = r"D:\OneDrive\PerceptionAction\Data"
 DatasetPath = os.path.join(ProjectPath, 'DatasetsFolds')
 
 k = 10
