@@ -7,14 +7,14 @@
 
 %replace following directory with the location of the saved network
 %predictions
-saved_path = 'C:\Users\hanna\OneDrive\lab\PhD\python\PerceptionActionInSurface\Final\saved_predictions';
+saved_path = 'D:\OneDrive\PerceptionAction\saved_predictions';
 
 %replace following directory with the location of the saved preprocessed
 %data
-data_path = 'C:\Users\hanna\OneDrive\MATLAB\lab\PhD\Perception_and_GF_prediction\DL_perception\OnlyInSurface\ParticipantMatsAndVecs\final';
+data_path = 'D:\OneDrive\PerceptionAction\Preprocessed';
 
 % replace following directory with the location of the codes
-project_path = 'C:\Users\hanna\OneDrive\MATLAB\lab\PhD\Perception_and_GF_prediction\DL_perception\OnlyInSurface\final';
+project_path = 'D:\OneDrive\PerceptionAction\Code\Analyses';
 
 %load the splits
 folds = load('TestIndsSplit.mat');
