@@ -18,7 +18,7 @@ for k = 1:length(forvector)
     filename = ['SN', num2str(h), '.mat'];
     
     %in following line - replace directory to data location
-    cd D:\OneDrive\PerceptionAction\Data\Data;
+    cd D:\OneDrive\PerceptionActionReview\Data\Data;
 
     data = load(filename);
     data = data.M;
@@ -164,7 +164,7 @@ for k = 1:length(forvector)
     end%end of running of k's trials
         
     %replace following directory with desired location for saving data
-    cd D:\OneDrive\PerceptionAction\Preprocessed;
+    cd D:\OneDrive\PerceptionActionReview\Preprocessed;
     save(['Features_', filename(1:end-4)], 'AllFeatures');
    
     disp(k)
