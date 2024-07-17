@@ -7,10 +7,10 @@ import scipy.io
 
 # Paths
 # Replace the following directory with the location of the saved preprocessed data
-MatPath = r"D:\OneDrive\PerceptionAction\Preprocessed"
+MatPath = r"D:\OneDrive\PerceptionActionReview\Preprocessed"
 
 # Replace the following directory with the location of the saved fold indices, and to which the datasets will be saved
-ProjectPath = r"D:\OneDrive\PerceptionAction\Data"
+ProjectPath = r"D:\OneDrive\PerceptionActionReview\Data"
 DatasetPath = os.path.join(ProjectPath, 'DatasetsFolds')
 
 k = 10
@@ -20,11 +20,10 @@ k = 10
 os.chdir(DatasetPath)
 
 
-#load splits for the non-negative effect participants
-TrainIndsSplit = np.load("Dictionary_TrainIndSplit.npy", allow_pickle = 'TRUE').item()
-TestIndsSplit = np.load("Dictionary_TestIndSplit.npy", allow_pickle = 'TRUE').item()
+#load splits 
 
-    
+TrainIndsSplit = np.load("Dictionary_TrainIndSplit_AllParticipants.npy", allow_pickle = 'TRUE').item()
+TestIndsSplit = np.load("Dictionary_TestIndSplit_AllParticipants.npy", allow_pickle = 'TRUE').item()
  
 # Taking Current Split 
 for Split in np.arange(1, k + 1):

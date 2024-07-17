@@ -9,14 +9,14 @@ import scipy.io
 # %% Paths
 
 # Replace the following directory with the location of the saved preprocessed data
-MatPath = r"D:\OneDrive\PerceptionAction\Preprocessed"
+MatPath = r"D:\OneDrive\PerceptionActionReview\Preprocessed"
 
 # Replace the following directory with the location of the saved fold indices, and to which the datasets will be saved
-ProjectPath = r"D:\OneDrive\PerceptionAction\Data"
+ProjectPath = r"D:\OneDrive\PerceptionActionReview\Data"
 DatasetPath = os.path.join(ProjectPath, 'DatasetsFolds')
 
 # Replace the following directory with the location where the model predictions should be saved
-save_path = r"D:\OneDrive\PerceptionAction\saved_predictions"
+save_path = r"D:\OneDrive\PerceptionActionReview\saved_predictions"
 
 Splits = np.arange(1, 11)
 
@@ -27,12 +27,12 @@ for Split in Splits:
   #train
   TrainFeaturesComp = np.load(f'TrainFeaturesComp_Split{Split}.npy')
   TrainFeaturesRef = np.load(f'TrainFeaturesRef_Split{Split}.npy')
-  TrainPlabels = np.load(f'TrainPlabels_Split{Split}.npy')
+  TrainPlabels = np.load(f'TrainPlabels_AllParticipants_Split{Split}.npy')
 
   #Test
   TestFeaturesComp = np.load(f'TestFeaturesComp_Split{Split}.npy')
   TestFeaturesRef = np.load(f'TestFeaturesRef_Split{Split}.npy')
-  TestPlabels = np.load(f'TestPlabels_Split{Split}.npy')
+  TestPlabels = np.load(f'TestPlabels_AllParticipants_Split{Split}.npy')
   
   SubtractedTrain = TrainFeaturesRef - TrainFeaturesComp
   TrainPlabels = np.reshape(TrainPlabels, (TrainPlabels.shape[0],))
@@ -46,7 +46,7 @@ for Split in Splits:
   
   # getting model predictions for testing participants of this fold
   os.chdir(DatasetPath)
-  TestIndsSplit = np.load("Dictionary_TestIndSplit.npy", allow_pickle = 'TRUE').item()
+  TestIndsSplit = np.load("Dictionary_TestIndSplit_AllParticipants.npy", allow_pickle = 'TRUE').item()
 
   TestParticipants = TestIndsSplit[f'split_{Split}']
 
@@ -65,7 +65,8 @@ for Split in Splits:
     
     subbed = features_ref - features_comp 
     preds = logisticRegr.predict(subbed)
-    preds = np.reshape(preds, (192,1))    
+    preds = np.reshape(preds, (192,1))
+    
 
     mdic1 = {"Preds": preds, "label": "Preds"}
 
