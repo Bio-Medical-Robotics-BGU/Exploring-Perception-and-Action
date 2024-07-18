@@ -18,6 +18,8 @@ DatasetPath = os.path.join(ProjectPath, 'DatasetsFolds')
 
 # where the model predictions will be saved
 save_path = os.path.join(base, "saved_predictions") 
+if not os.path.exists(save_path):
+    os.makedirs(save_path)
 
 Splits = np.arange(1, 11)
 
