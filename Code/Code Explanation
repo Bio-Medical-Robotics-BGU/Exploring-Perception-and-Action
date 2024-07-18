@@ -18,14 +18,9 @@ To get the responses predicted by the neural networks for each participant:
     a. NeuralNetwork (Python code) - runs in a loop over all 10 folds, trains the networks and gets the predicted responses for each test participant in the 
        test data for that fold. This is all repeated in a loop five times to ensure consistency and no effect of the random seed.
        In this code, the user can choose which signals should be included (any combination of position, velocity, acceleration and grip force).
-    b. NeuralNetworkAblation (Python code) - runs in a loop over all 10 folds, trains the networks and gets the predicted responses for each test participant in the 
-       test data for that fold. This is all repeated in a loop five times to ensure consistency and no effect of the random seed.
-       In this code, the user can choose which parts of the network should be included (Block #1, Block #1 + last LSTM layer, Block #1 + attention + last LSTM layer
-       or full model).
-    c. NeuralNetworkNeg (Python code) - runs in a loop over all 10 folds, trains the networks and gets the predicted responses for each test participant in the 
-       test data for that fold. This is all repeated in a loop five times to ensure consistency and no effect of the random seed.
-       In this code, all the participants (including the four negative-effect participants) are included. The user can choose if the negative stretch session is 
-       included or not.
+    b. NeuralNetworkNeg (Python code) - runs in a loop over all 10 folds, trains the networks and gets the predicted responses for each test participant in the 
+       test data for that fold. This is all repeated in a loop five times to ensure consistency and no effect of the random seed. The negative stretch session is 
+       included.
 
 Analyses:
   1. CertaintyLoss (Python code) - computes the certainty values for the predictions of each network for each fold for one of the runs, and creates the graphs for
