@@ -6,11 +6,12 @@ import numpy as np
 import scipy.io
 
 # Paths
-# Replace the following directory with the location of the saved preprocessed data
-MatPath = r"D:\OneDrive\PerceptionActionReview\Preprocessed"
+# Replace the following directory with the project directory
+base = "D:\OneDrive\PerceptionActionReview"
+MatPath = os.path.join(base, "Preprocessed")
 
-# Replace the following directory with the location of the saved fold indices, and to which the datasets will be saved
-ProjectPath = r"D:\OneDrive\PerceptionActionReview\Data"
+# the location of the saved fold indices, and to which the datasets are be saved
+ProjectPath = os.path.join(base, "Data") 
 DatasetPath = os.path.join(ProjectPath, 'DatasetsFolds')
 
 k = 10
