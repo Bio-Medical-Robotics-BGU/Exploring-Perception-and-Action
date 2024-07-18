@@ -2,7 +2,6 @@
 folds. This code creates Fig. 7 in the manuscript.'''
 # %% Imports 
 import matplotlib.pyplot as plt
-from keras_self_attention import SeqSelfAttention
 from tensorflow.keras.models import load_model
 
 import os
@@ -12,14 +11,14 @@ plt.rcParams["font.family"] = "Times New Roman"
 
 # %% Paths
 # Replace the following directory with the location of the saved preprocessed data
-MatPath = r"D:\OneDrive\PerceptionAction\Preprocessed"
+MatPath = r"D:\OneDrive\PerceptionActionReview\Preprocessed"
 
 # Replace the following directory with the location where the datasets are saved
-ProjectPath = r"D:\OneDrive\PerceptionAction\Data"
+ProjectPath = r"D:\OneDrive\PerceptionActionReview\Data"
 DatasetPath = os.path.join(ProjectPath, 'DatasetsFolds')
 
 # Replace the following directory with the location where the model predictions should be saved
-save_path = r"D:\OneDrive\PerceptionAction\saved_predictions"
+save_path = r"D:\OneDrive\PerceptionActionReview\saved_predictions"
 
 # %% Setting up model names
 run = int(input("Which run would you like to use (number between 1 - 5)? \n"))
@@ -50,17 +49,17 @@ for i in range(1, 11):
   #getting signals
   os.chdir(DatasetPath)
 
-  AllTestSignalsComp = np.load(f'TestSignalsComp_Split{Split}.npy')
-  AllTestSignalsRef = np.load(f'TestSignalsRef_Split{Split}.npy')
-  AllTestPlabels = np.load(f'TestPlabels_Split{Split}.npy')
-  AllTestKComps = np.load(f'TestKComps_Split{Split}.npy')
-  AllTestTdGains = np.load(f'TestTdGains_Split{Split}.npy')
+  AllTestSignalsComp = np.load(f'TestSignalsComp_AllParticipants_Split{Split}.npy')
+  AllTestSignalsRef = np.load(f'TestSignalsRef_AllParticipants_Split{Split}.npy')
+  AllTestPlabels = np.load(f'TestPlabels_AllParticipants_Split{Split}.npy')
+  AllTestKComps = np.load(f'TestKComps_AllParticipants_Split{Split}.npy')
+  AllTestTdGains = np.load(f'TestTdGains_AllParticipants_Split{Split}.npy')
 
 
   #loading model
   os.chdir(save_path)
   model_name = ModelNames[f'Fold{i}']
-  model = load_model(model_name, custom_objects={'SeqSelfAttention': SeqSelfAttention})
+  model = load_model(model_name)
 
   #getting the model outputs for the test signals
   outs = model.predict([AllTestSignalsComp, AllTestSignalsRef])
@@ -162,7 +161,7 @@ for j, k in enumerate(kcomps):
   
 
 # %% all trials
-plt.figure()
+fig = plt.figure()
 p1 = plt.scatter(0, CorrectCertsVec[0], c = np.array([0, 0, 0])/255, marker = '*')
 p2 = plt.scatter(0, ErrorCertsVec[0], c = np.array([166, 166, 166])/255, marker = 's')
 
@@ -177,11 +176,12 @@ plt.plot(np.arange(-1.1, 12.2, 0.1), 0.5*np.ones((len(np.arange(-1.1, 12.2, 0.1)
 
 plt.plot(5.5*np.ones((len(np.arange(0, 1.1, 0.1))),), np.arange(0, 1.1, 0.1), linestyle = ':', c = [0.2, 0.2, 0.2], linewidth = 0.5)
 
-plt.xticks(np.arange(len(kcomps)), labels = kcomps, fontsize = 14)
-plt.yticks(np.arange(0, 1.1, 0.1), fontsize = 14)
+plt.xticks(np.arange(len(kcomps)), labels = kcomps, fontsize = 10)
+plt.yticks(np.arange(0, 1.1, 0.1), fontsize = 10)
+fig.set_size_inches(4, 3)
 
 # %% force trials
-plt.figure()
+fig = plt.figure()
 p1 = plt.scatter(0, CorrectForceCertsVec[0], c = np.array([0, 0, 0])/255, marker = '*')
 p2 = plt.scatter(0, ErrorForceCertsVec[0], c = np.array([166, 166, 166])/255, marker = 's')
 
@@ -196,11 +196,12 @@ plt.plot(np.arange(-1.1, 12.2, 0.1), 0.5*np.ones((len(np.arange(-1.1, 12.2, 0.1)
 
 plt.plot(5.5*np.ones((len(np.arange(0, 1.1, 0.1))),), np.arange(0, 1.1, 0.1), linestyle = ':', c = [0.2, 0.2, 0.2], linewidth = 0.5)
 
-plt.xticks(np.arange(len(kcomps)), labels = kcomps, fontsize = 14)
-plt.yticks(np.arange(0, 1.1, 0.1), fontsize = 14)
+plt.xticks(np.arange(len(kcomps)), labels = kcomps, fontsize = 10)
+plt.yticks(np.arange(0, 1.1, 0.1), fontsize = 10)
+fig.set_size_inches(4, 3)
 
 # %% ss trials
-plt.figure()
+fig = plt.figure()
 p1 = plt.scatter(0, CorrectSSCertsVec[0], c = np.array([0, 0, 0])/255, marker = '*')
 p2 = plt.scatter(0, ErrorSSCertsCertsVec[0], c = np.array([166, 166, 166])/255, marker = 's')
 
@@ -215,5 +216,6 @@ plt.plot(np.arange(-1.1, 12.2, 0.1), 0.5*np.ones((len(np.arange(-1.1, 12.2, 0.1)
 
 plt.plot(5.5*np.ones((len(np.arange(0, 1.1, 0.1))),), np.arange(0, 1.1, 0.1), linestyle = ':', c = [0.2, 0.2, 0.2], linewidth = 0.5)
 
-plt.xticks(np.arange(len(kcomps)), labels = kcomps, fontsize = 14)
-plt.yticks(np.arange(0, 1.1, 0.1), fontsize = 14)
+plt.xticks(np.arange(len(kcomps)), labels = kcomps, fontsize = 10)
+plt.yticks(np.arange(0, 1.1, 0.1), fontsize = 10)
+fig.set_size_inches(4, 3)
