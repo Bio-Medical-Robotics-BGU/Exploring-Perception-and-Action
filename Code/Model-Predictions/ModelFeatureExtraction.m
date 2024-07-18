@@ -19,7 +19,7 @@ for k = 1:length(forvector)
     
     filename = ['SN', num2str(h), '.mat'];
     
-    %in following line - replace directory to data location
+    %data location
     cd(fullfile(project_path, "Data\Participant-Data"));
 
     data = load(filename);
@@ -165,7 +165,7 @@ for k = 1:length(forvector)
         disp(i)
     end%end of running of k's trials
         
-    %replace following directory with desired location for saving data
+    %location for saving data
     mkdir(fullfile(project_path, 'Preprocessed'));
     cd(fullfile(project_path, 'Preprocessed'));
     save(['Features_', filename(1:end-4)], 'AllFeatures');
