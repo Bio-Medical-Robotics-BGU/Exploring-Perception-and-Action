@@ -5,22 +5,21 @@
 %replace following directory with the location of the saved network
 %predictions
 clear all; clc; 
+project_path = "C:\Users\hannako\Downloads\ExploringPerceptionAction\ExploringPerceptionandAction";
 
-% % replace following directory with the location of the codes
-cd 'D:\OneDrive\PerceptionActionReview'
-addpath('D:\OneDrive\PerceptionActionReview')
-addpath(genpath('D:\OneDrive\PerceptionActionReview'))
+cd(project_path);
+addpath(project_path)
+addpath(genpath(project_path))
 
-%replace following directory with the location of the saved network
+% the location of the saved network
 %predictions
-saved_path = 'D:\OneDrive\PerceptionActionReview\saved_predictions';
+saved_path = fullfile(project_path, 'saved_predictions');
 
-%replace following directory with the location of the saved preprocessed
-%data
-data_path = 'D:\OneDrive\PerceptionActionReview\Preprocessed';
+%the location of the saved preprocessed data
+data_path = fullfile(project_path, 'Preprocessed'); 
 
-% replace following directory with the location of the codes
-project_path = 'D:\OneDrive\PerceptionActionReview\Code\Analyses';
+% the location of the codes
+project_path = fullfile(project_path, 'Code', 'Analyses');  
 
 
 %load the splits
