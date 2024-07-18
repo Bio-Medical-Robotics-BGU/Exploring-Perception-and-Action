@@ -5,20 +5,21 @@
 % This also contains the code for the percentage of erros (model or participant
 % per comparison stiffness level (Fig. 7(a-f))).
 clear all; clc; 
-cd 'D:\OneDrive\PerceptionActionReview'
-addpath('D:\OneDrive\PerceptionActionReview')
-addpath(genpath('D:\OneDrive\PerceptionActionReview'))
+project_path = "C:\Users\hannako\Downloads\ExploringPerceptionAction\ExploringPerceptionandAction";
 
-%replace following directory with the location of the saved network
+cd(project_path);
+addpath(project_path)
+addpath(genpath(project_path))
+
+% the location of the saved network
 %predictions
-saved_path = 'D:\OneDrive\PerceptionActionReview\saved_predictions';
+saved_path = fullfile(project_path, 'saved_predictions');
 
-%replace following directory with the location of the saved preprocessed
-%data
-data_path = 'D:\OneDrive\PerceptionActionReview\Preprocessed';
+%the location of the saved preprocessed data
+data_path = fullfile(project_path, 'Preprocessed'); 
 
-% replace following directory with the location of the codes
-project_path = 'D:\OneDrive\PerceptionActionReview\Code\Analyses';
+% the location of the codes
+project_path = fullfile(project_path, 'Code', 'Analyses');  
 
 %load the splits
 folds = load('TestIndsSplit_AllParticipants.mat');
