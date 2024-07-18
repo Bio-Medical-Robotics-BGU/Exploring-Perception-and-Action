@@ -48,7 +48,7 @@ for Split in Splits:
   logisticRegr.fit(SubtractedTrain, TrainPlabels)
   
   # getting model predictions for testing participants of this fold
-  os.chdir(DatasetPath)
+  os.chdir(ProjectPath)
   TestIndsSplit = np.load("Dictionary_TestIndSplit_AllParticipants.npy", allow_pickle = 'TRUE').item()
 
   TestParticipants = TestIndsSplit[f'split_{Split}']
