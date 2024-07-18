@@ -6,11 +6,11 @@ import numpy as np
 import scipy.io
 
 # %% Paths
-# Replace the following directory with the location of the saved preprocessed data
-MatPath = r"D:\OneDrive\PerceptionActionReview\Preprocessed"
+# Replace the following directory with the project directory
+base = "D:\OneDrive\PerceptionActionReview"
+MatPath = os.path.join(base, "Preprocessed")
 
-# Replace the following directory with the location to which to save the model responses
-ProjectPath = r"D:\OneDrive\PerceptionActionReview\saved_predictions"
+ProjectPath = os.path.join(base, "saved_predictions") 
 
 # %% Negative
 Participants = np.arange(1, 41)
