@@ -2,6 +2,8 @@
 % Data extraction 
 % Filtering
 % Computes the features for the models
+
+project_path = "C:\Users\hannako\Downloads\ExploringPerceptionAction\ExploringPerceptionandAction";
 %%
 forvector = [1:21, 23:39];
 ForVector = [25:216, 241:432];
@@ -18,7 +20,7 @@ for k = 1:length(forvector)
     filename = ['SN', num2str(h), '.mat'];
     
     %in following line - replace directory to data location
-    cd D:\OneDrive\PerceptionActionReview\Data\Data;
+    cd(fullfile(project_path, "Data\Participant-Data"));
 
     data = load(filename);
     data = data.M;
@@ -164,7 +166,8 @@ for k = 1:length(forvector)
     end%end of running of k's trials
         
     %replace following directory with desired location for saving data
-    cd D:\OneDrive\PerceptionActionReview\Preprocessed;
+    mkdir(fullfile(project_path, 'Preprocessed'));
+    cd(fullfile(project_path, 'Preprocessed'));
     save(['Features_', filename(1:end-4)], 'AllFeatures');
    
     disp(k)
