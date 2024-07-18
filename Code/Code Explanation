@@ -24,13 +24,13 @@ To get the responses predicted by the neural networks for each participant:
 
 Analyses:
   1. CertaintyLoss (Python code) - computes the certainty values for the predictions of each network for each fold for one of the runs, and creates the graphs for
-     Fig. 7(g-i).
-  2. Fig3_Preprocessing (MATLAB code) - creates Fig. 3 in the manuscript, which demonstrates the preprocessing. 
+     Fig. 7(d-f).
+  2. Fig3_Preprocessing (MATLAB code) - creates Fig. 3 in the manuscript, which demonstrates the preprocessing and the raw action signals. 
   3. Fig4_PsychometricCurveMetrics (MATLAB code) - creates the psychometric curves for Fig. 4 in the manuscript, which demonstrate the metrics. 
   4. PsychometricFitting_ForMetricDescription (MATLAB code) - called by Fig4_PsychometricCurveMetrics to create the psychometric curves.
   5. PostModelAnalyses (MATLAB code) - creates the real and predicted psychometric curves based on the participants answers and a model's predictions (model or 
      network choice is user input). The code then computes the PSE and JND errors, and performs the regression of predicted augmentation against real augmentation.
-     This code is for the positive stretch session, and creates the plots for Fig. 6, 7(a-f), 8, 9, and 10.
+     This code is for the positive stretch session, and creates the plots for Fig. 6, 7, 8 and 9.
   6. PsychometricMats (MATLAB code) - called by PostModelAnalyses to prepare the data for psychometric curves.
   7. PsychometricFitting (MATLAB code) - called by PsychometricMats to create the psychometric curves. 
   8. PostModelAnalyses_BothStretchSessions (MATLAB code) - similar to PostModelAnalyses, however for both stretch sessions. This code creates the plots for Fig. 11.
