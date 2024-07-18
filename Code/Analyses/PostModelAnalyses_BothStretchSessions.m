@@ -4,14 +4,24 @@
 
 %replace following directory with the location of the saved network
 %predictions
-saved_path = 'D:\OneDrive\PerceptionAction\saved_predictions';
+clear all; clc; 
+
+% % replace following directory with the location of the codes
+cd 'D:\OneDrive\PerceptionActionReview'
+addpath('D:\OneDrive\PerceptionActionReview')
+addpath(genpath('D:\OneDrive\PerceptionActionReview'))
+
+%replace following directory with the location of the saved network
+%predictions
+saved_path = 'D:\OneDrive\PerceptionActionReview\saved_predictions';
 
 %replace following directory with the location of the saved preprocessed
 %data
-data_path = 'D:\OneDrive\PerceptionAction\Preprocessed';
+data_path = 'D:\OneDrive\PerceptionActionReview\Preprocessed';
 
 % replace following directory with the location of the codes
-project_path = 'D:\OneDrive\PerceptionAction\Code\Analyses';
+project_path = 'D:\OneDrive\PerceptionActionReview\Code\Analyses';
+
 
 %load the splits
 folds = load('TestIndsSplit_AllParticipants.mat');
@@ -29,9 +39,6 @@ PredJNDS = [];
 
 %for accuracy
 Accuracies = zeros(10, 1);
-
-%for finding the two large error participants
-LargeErrors = []; %to save indices of large error participants
 count = 0;
 %% Creating psychometric curves, and getting PSE and JND values
 % The psychometric curves in Fig. 11(a-c) were created here.
@@ -47,9 +54,7 @@ for f = 1:10 %run over the 10 folds
 
         count = count + 1; 
 
-        if (participants(p) == 10 || participants(p) == 17)
-            LargeErrors = [LargeErrors; count];
-        end
+       
         cd(data_path)
         Labels = load(['Labels_BothStretch_SN', num2str(participants(p)), '.mat']);
         Labels = Labels.AllPlabels;
@@ -62,11 +67,12 @@ for f = 1:10 %run over the 10 folds
 
         %getting predictions
         cd(saved_path)
-        preds = load(['Preds_SN', num2str(participants(p)), '_BothStretch_Run', Run, '.mat']);
+        preds = load(['Preds_SN', num2str(participants(p)), '_BothStretch_Att_Run', Run, '.mat']);
         preds = preds.Preds;
 
         cd(project_path)
         [pses, pred_pses, jnds, pred_jnds] = PsychometricMatsBothStretch(KComps, TdGains, Labels, preds);
+
 
         RealPSEs = [RealPSEs; pses];
         PredPSEs = [PredPSEs; pred_pses];
@@ -83,6 +89,7 @@ end %end of folds loop
 %% Metrics
 %% Accuracy
 MeanRunAcc = mean(Accuracies);
+disp(MeanRunAcc)
 
 %% PSE Error
 PSE_ForceErrors = RealPSEs(:, 1) - PredPSEs(:, 1);
@@ -134,8 +141,25 @@ fig.Position = [200 200 800 400];
 
 box on
 
+%% JND Error
+clc;
+
+JND_ForceErrors = RealJNDs(:, 1) - PredJNDS(:, 1);
+JND_StretchErrors = RealJNDs(:, 2) - PredJNDS(:, 2);
+JND_ForceErrors2 = RealJNDs(:, 3) - PredJNDS(:, 3);
+JND_NegStretchErrors = RealJNDs(:, 4) - PredJNDS(:, 4);
+
+mes2 = ['JND average errors are: \n Force condition in positive stretch session ',...
+    num2str(mean(JND_ForceErrors)), '\n Positive stretch condition ',...
+    num2str(mean(JND_StretchErrors)),...
+    '\n Force condition in negative stretch session ', num2str(mean(JND_ForceErrors2)),...
+    '\n Negative stretch condition ', num2str(mean(JND_NegStretchErrors))];
+
+fprintf(mes2)
+
 %% Regresssion
 % Creates the plot for Fig. 11(e)
+
 AllRealsPos = RealPSEs(:, 2) - RealPSEs(:, 1);
 AllPredsPos = PredPSEs(:, 2) - PredPSEs(:, 1);
 
@@ -145,22 +169,7 @@ AllPredsNeg = PredPSEs(:, 4) - PredPSEs(:, 3);
 AllReals = [AllRealsPos; AllRealsNeg];
 AllPreds = [AllPredsPos; AllPredsNeg];
 
-AllRealsPos_part = AllRealsPos;
-AllPredsPos_part = AllPredsPos;
-
-AllRealsPos_part(LargeErrors) = []; %eliminating the big error participants
-AllPredsPos_part(LargeErrors) = [];
-
-AllRealsNeg_part = AllRealsNeg;
-AllPredsNeg_part = AllPredsNeg;
-
-AllRealsNeg_part(LargeErrors) = []; %eliminating the big error participants
-AllPredsNeg_part(LargeErrors) = [];
-
-AllReals_part = [AllRealsPos_part; AllRealsNeg_part];
-AllPreds_part = [AllPredsPos_part; AllPredsNeg_part];
-
-% Predicted PSE vs PSE - No HV
+% Predicted PSE vs PSE 
 [sorted_reals1, sorted_inds1] = sort(AllReals);
 sorted_preds1 = AllPreds(sorted_inds1);
 
@@ -168,58 +177,44 @@ sorted_preds1 = AllPreds(sorted_inds1);
 [sim1, ~, ~, ~, stats1] = regress(AllPreds, [ones(length(AllReals),1) AllReals]);
 y_fit1 = sim1(1) + sim1(2)*sorted_reals1;
 
-[sorted_reals2, sorted_inds2] = sort(AllReals_part);
-sorted_preds2 = AllPreds_part(sorted_inds2);
-
-%regressing|
-[sim2, ~, ~, ~, stats2] = regress(AllPreds_part, [ones(length(AllReals_part),1) AllReals_part]);
-y_fit2 = sim2(1) + sim2(2)*sorted_reals2;
 
 Marks = ['o', '+', '.', 'x', 's', 'd', '<', '>', 'v', '^', 'p', 'h'];
     
 figure
 hold on
 for i = 1:12
-    plot(AllReals_part(i), AllPreds_part(i), 'marker', Marks(i), 'linewidth', 0.5, 'markersize', 6, 'color', [0 121 204]./255)
-    plot(AllReals_part(length(AllRealsNeg_part) + i), AllPreds_part(length(AllRealsNeg_part) + i), 'marker', Marks(i), 'linewidth', 0.5, 'markersize', 6, 'color', [144 14 224]./255)
+    plot(AllReals(i), AllPreds(i), 'marker', Marks(i), 'linewidth', 0.5, 'markersize', 6, 'color', [0 121 204]./255)
+    plot(AllReals(length(AllRealsNeg) + i), AllPreds(length(AllRealsNeg) + i), 'marker', Marks(i), 'linewidth', 0.5, 'markersize', 6, 'color', [144 14 224]./255)
 end
 
 Marks2 = ['o', 's', 'd', '<', '>', 'v', '^', 'p', 'h'];
 for i = 13:21
-    plot(AllReals_part(i), AllPreds_part(i), 'marker', Marks2(i-12), 'linewidth', 0.5, 'markersize', 6, 'color', [0 121 204]./255, 'markerfacecolor', [0 121 204]./255)
-    plot(AllReals_part(length(AllRealsNeg_part) + i), AllPreds_part(length(AllRealsNeg_part) + i), 'marker', Marks2(i-12), 'linewidth', 0.5, 'markersize', 6, 'color', [144 14 224]./255, 'markerfacecolor', [144 14 224]./255)
+    plot(AllReals(i), AllPreds(i), 'marker', Marks2(i-12), 'linewidth', 0.5, 'markersize', 6, 'color', [0 121 204]./255, 'markerfacecolor', [0 121 204]./255)
+    plot(AllReals(length(AllRealsNeg) + i), AllPreds(length(AllRealsNeg) + i), 'marker', Marks2(i-12), 'linewidth', 0.5, 'markersize', 6, 'color', [144 14 224]./255, 'markerfacecolor', [144 14 224]./255)
 end
 
 font = 'ZapfDingbats';
-m = char([0x2721, 0x2740, 0x2722, 0x2722, 0x2713, 0x2744, 0x2764, 0x273A, 0x274B, 0x2768, 0x273F, 0x2765, 0x27A4, 0x270F, 0x2708]);
-for i = 22:36
-    text(AllReals_part(i), AllPreds_part(i), m(i-21),'fontname',font,'fontsize',10,'color', [0 121 204]./255)
-    text(AllReals_part(length(AllRealsNeg_part) + i), AllPreds_part(length(AllRealsNeg_part) + i), m(i-21),'fontname',font,'fontsize',10,'color', [144 14 224]./255)
+m = char([0x2721, 0x2740, 0x2722, 0x2737, 0x2713, 0x2744, 0x2764, 0x273A, 0x274B, 0x2768, 0x273F, 0x2765, 0x27A4, 0x270F, 0x2708, 0x2756, 0x2746]);
+for i = 22:38
+    text(AllReals(i), AllPreds(i), m(i-21),'fontname',font,'fontsize',10,'color', [0 121 204]./255)
+    text(AllReals(length(AllRealsNeg) + i), AllPreds(length(AllRealsNeg) + i), m(i-21),'fontname',font,'fontsize',10,'color', [144 14 224]./255)
 end
 
-plot(AllReals(LargeErrors(1)), AllPreds(LargeErrors(1)), '*', 'linewidth', 0.5, 'markersize', 6, 'color', [81 150 12]./255)
-plot(AllReals(LargeErrors(2)), AllPreds(LargeErrors(2)), '*', 'linewidth', 0.5, 'markersize', 6, 'color', [81 150 12]./255)
-plot(AllReals(length(AllRealsPos) + LargeErrors(1)), AllPreds(length(AllRealsPos) + LargeErrors(1)), '*', 'linewidth', 0.5, 'markersize', 6, 'color', [109 202 16]./255)
-plot(AllReals(length(AllRealsPos) + LargeErrors(2)), AllPreds(length(AllRealsPos) + LargeErrors(2)), '*', 'linewidth', 0.5, 'markersize', 6, 'color', [109 202 16]./255)
+p2 = plot([0; sorted_reals1], [sim1(1); y_fit1], 'linewidth', 1.5, 'color', 'k');
 
-
-p1 = plot([0; sorted_reals2], [sim2(1); y_fit2], 'linewidth', 1.5, 'color', 'k');
-p2 = plot([0; sorted_reals1], [sim1(1); y_fit1], 'linewidth', 1.5, 'color', [81 150 12]./255, 'linestyle', '--');
-
-plot([-26, 100], [-26, 100], 'linewidth', 0.5, 'color', [0.7 0.7 0.7], 'linestyle', '--', 'HandleVisibility', 'Off');
+plot([-40, 120], [-40, 120], 'linewidth', 0.5, 'color', [0.7 0.7 0.7], 'linestyle', '--', 'HandleVisibility', 'Off');
 
 set(gca, 'fontname', 'Times New Roman', 'fontsize', 12)
 xlabel('Real \DeltaPSE', 'fontname', 'Times New Roman', 'fontsize', 14)
 ylabel('Predicted \DeltaPSE', 'fontname', 'Times New Roman', 'fontsize', 14)
 
-l = legend([p1, p2], ['Predicted \DeltaPSE = ', num2str(round(sim2(1)*100)/100), ' + ', num2str(round(sim2(2)*100)/100), '\cdotReal \DeltaPSE'], ...
-    ['Predicted \DeltaPSE = ', num2str(round(sim1(1)*100)/100), ' + ', num2str(round(sim1(2)*100)/100), '\cdotReal \DeltaPSE'],...
+l = legend(p2, ['Predicted \DeltaPSE = ', num2str(round(sim1(1)*100)/100), ' + ', num2str(round(sim1(2)*100)/100), '\cdotReal \DeltaPSE'],...
     'Location', 'northwest');
 l.FontSize = 12;
 
 set(gca, 'fontname', 'Times New Roman', 'fontsize', 12)
 
-ylim([-26 100])
+ylim([-20 100])
 
 xlim(get(gca, 'Ylim'))
 axis square
@@ -227,3 +222,17 @@ axis square
 plot([0, 0], get(gca, 'Ylim'), 'k--', 'HandleVisibility','off')
 plot(get(gca, 'Xlim'), [0, 0], 'k--', 'HandleVisibility','off')
 box on
+
+disp(stats1)
+
+%% plotting Delta PSEs
+Real_Pos_Minus_Neg = AllRealsPos - AllRealsNeg; %difference between perceptual augmentation caused 
+%by positive stretch and that caused by negative stretch.
+Pred_Pos_Minus_Neg = AllPredsPos - AllPredsNeg; %the predicted difference
+
+sign_real = sign(Real_Pos_Minus_Neg);
+sign_pred = sign(Pred_Pos_Minus_Neg);
+allerrs = find(sign_real ~= sign_pred);
+allcors = setdiff([1:38], allerrs);
+
+
