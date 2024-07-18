@@ -60,7 +60,6 @@ set(gca, 'fontsize', 10)
 fig=gcf;
 fig.Position=[0, 0, 250, 210];
 
-
 [PSE1_p,PSE2_p]=PsychometricFitting(PsychometricData_F_pred,PsychometricData_SS_pred, 'Predicted');
 
 set(gca, 'fontname', 'Times New Roman')
