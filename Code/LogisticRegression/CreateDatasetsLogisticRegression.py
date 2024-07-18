@@ -11,14 +11,19 @@ base = "D:\OneDrive\PerceptionActionReview"
 MatPath = os.path.join(base, "Preprocessed")
 
 # the location of the saved fold indices, and to which the datasets will be saved
-ProjectPath = os.path.join(base, "Data") 
+if not os.path.exists(ProjectPath):
+    os.makedirs(ProjectPath)
+    
 DatasetPath = os.path.join(ProjectPath, 'DatasetsFolds')
-
+if not os.path.exists(DatasetPath):
+    os.makedirs(DatasetPath)
+    
 k = 10
 
 
 # %% Loading splits
-os.chdir(DatasetPath)
+os.chdir(ProjectPath)
+
 
 
 #load splits 
