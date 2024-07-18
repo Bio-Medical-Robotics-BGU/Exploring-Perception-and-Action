@@ -138,3 +138,58 @@ l = legend('Standard', 'Comparison');
 set(l,'FontSize', 12, 'fontname', 'Times New Roman');
 fig.Position = [100 100 700 550];
 box on
+
+%% raw signals
+%getting signals
+figure
+t_ref = trial_data.DataRef(:, 1);
+t_comp = trial_data.DataComp(:, 1);
+allt = [t_ref; t_comp];
+[t, inds] = sort(allt);
+
+y_ref = 1000*trial_data.DataRef(:, 3); %times by 1000 to convert from [m] to [mm]
+y_comp = 1000*trial_data.DataComp(:, 3);
+ally = [y_ref; y_comp];
+y = ally(inds);
+
+v_ref = trial_data.DataRef(:, 6); 
+v_comp = trial_data.DataComp(:, 6);
+allv = [v_ref; v_comp];
+v = allv(inds);
+
+gf_ref = -trial_data.DataRef(:, 13); 
+gf_comp = -trial_data.DataComp(:, 13);
+allgf = [gf_ref; gf_comp];
+gf = allgf(inds);
+
+subplot(3, 1, 1)
+plot(t_ref, y_ref, 'color', [209, 1, 36]./255)
+hold on
+
+plot([t_comp; t_ref(1)], [y_comp; y_ref(1)], 'k')
+legend('Standard', 'Comparison', 'fontname', 'Times New Roman')
+set(gca, 'fontname', 'Times New Roman', 'fontsize', 20)
+xlabel('Time [s]', 'fontname', 'Times New Roman', 'fontsize', 22)
+ylabel('Position [mm]', 'fontname', 'Times New Roman', 'fontsize', 22)
+ys = get(gca, 'ylim');
+xs = get(gca, 'xlim');
+xlim([min(t), 6.85])
+
+subplot(3, 1, 2)
+plot(t_comp, v_comp, 'k')
+hold on
+plot([t_comp(end); t_ref], [v_comp(end); v_ref], 'color', [209, 1, 36]./255)
+set(gca, 'fontname', 'Times New Roman', 'fontsize', 20)
+xlabel('Time [s]', 'fontname', 'Times New Roman', 'fontsize', 22)
+ylabel('Velocity [mm/s]', 'fontname', 'Times New Roman', 'fontsize', 22)
+xlim([min(t), 6.85])
+
+subplot(3, 1, 3)
+plot(t_comp, gf_comp, 'k')
+hold on
+plot([t_comp(end); t_ref], [gf_comp(end); gf_ref], 'color', [209, 1, 36]./255)
+set(gca, 'fontname', 'Times New Roman', 'fontsize', 20)
+xlabel('Time [s]', 'fontname', 'Times New Roman', 'fontsize', 22)
+ylabel('Grip Force [N]', 'fontname', 'Times New Roman', 'fontsize', 22)
+xlim([min(t), 6.85])
+
