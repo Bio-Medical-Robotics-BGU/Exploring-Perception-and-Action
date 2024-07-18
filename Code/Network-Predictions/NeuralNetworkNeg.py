@@ -25,7 +25,9 @@ DatasetPath = os.path.join(ProjectPath, 'DatasetsFolds')
 
 # the location where the model predictions should be saved
 save_path = os.path.join(base, "saved_predictions") 
-
+if not os.path.exists(save_path):
+    os.makedirs(save_path)
+  
 Splits = np.arange(1, 11) #for the k-fold validation
 Runs = np.arange(3, 5) #for the 5 repititions
 
