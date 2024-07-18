@@ -6,7 +6,6 @@ from tensorflow.keras.regularizers import l2
 from tensorflow.keras.callbacks import LearningRateScheduler
 import tensorflow as tf
 import tensorflow.keras.backend as K
-from keras_self_attention import SeqSelfAttention
 
 import os
 import numpy as np
@@ -15,14 +14,14 @@ import scipy.io
 # %% Paths
 
 # Replace the following directory with the location of the saved preprocessed data
-MatPath = r"D:\OneDrive\PerceptionAction\Preprocessed"
+MatPath = r"D:\OneDrive\PerceptionActionReview\Preprocessed"
 
 # Replace the following directory with the location where the datasets are saved
-ProjectPath = r"D:\OneDrive\PerceptionAction\Data"
+ProjectPath = r"D:\OneDrive\PerceptionActionReview\Data"
 DatasetPath = os.path.join(ProjectPath, 'DatasetsFolds')
 
 # Replace the following directory with the location where the model predictions should be saved
-save_path = r"D:\OneDrive\PerceptionAction\saved_predictions"
+save_path = r"D:\OneDrive\PerceptionActionReview\saved_predictions"
 
 Splits = np.arange(1, 11) #for the k-fold validation
 Runs = np.arange(1, 6) #for the 5 repititions
@@ -40,15 +39,15 @@ for run in Runs:
     os.chdir(DatasetPath)
     
     #train
-    AllTrainSignalsComp = np.load(f'TrainSignalsComp_Split{Split}.npy')
-    AllTrainSignalsRef = np.load(f'TrainSignalsRef_Split{Split}.npy')
-    AllTrainPlabels = np.load(f'TrainPlabels_Split{Split}.npy')
+    AllTrainSignalsComp = np.load(f'TrainSignalsComp_AllParticipants_Split{Split}.npy')
+    AllTrainSignalsRef = np.load(f'TrainSignalsRef_AllParticipants_Split{Split}.npy')
+    AllTrainPlabels = np.load(f'TrainPlabels_AllParticipants_Split{Split}.npy')
 
     #Test
-    AllTestSignalsComp = np.load(f'TestSignalsComp_Split{Split}.npy')
-    AllTestSignalsRef = np.load(f'TestSignalsRef_Split{Split}.npy')
-    AllTestPlabels = np.load(f'TestPlabels_Split{Split}.npy')
-    
+    AllTestSignalsComp = np.load(f'TestSignalsComp_AllParticipants_Split{Split}.npy')
+    AllTestSignalsRef = np.load(f'TestSignalsRef_AllParticipants_Split{Split}.npy')
+    AllTestPlabels = np.load(f'TestPlabels_AllParticipants_Split{Split}.npy')
+
     # taking the desired combination of signals
     AllTrainSignalsComp = AllTrainSignalsComp[:, :, sigs]
     AllTrainSignalsRef = AllTrainSignalsRef[:, :, sigs]
@@ -59,8 +58,7 @@ for run in Runs:
     
     # Building neural network
     lstm1 = 128
-    lstm2 = 64 
-    lstm3 = 64
+    lstm2 = 64
 
     do = 0.4 
     reg = 0.001
@@ -71,29 +69,17 @@ for run in Runs:
     x1 = Bidirectional(LSTM(lstm1, kernel_regularizer=l2(reg), return_sequences = True))(Input1)
     x2 = Dropout(do)(x1)
     x3 = BatchNormalization(axis = -1, momentum = 0.99, epsilon = 0.001, center = True, scale = True)(x2)
-    x4 = SeqSelfAttention(attention_type=SeqSelfAttention.ATTENTION_TYPE_MUL,
-                    attention_activation='softmax',
-                    name='Attention1')(x3)
-
-    x5 = Bidirectional(LSTM(lstm2, return_sequences = True, kernel_regularizer=l2(reg)))(x4)
-    x6 = Dropout(do)(x5)
-    x7 = BatchNormalization(axis = -1, momentum = 0.99, epsilon = 0.001, center = True, scale = True)(x6)
-    x8 = Bidirectional(LSTM(lstm3, return_sequences = False, kernel_regularizer=l2(reg)), name='CompRep')(x7)
+    
+    x4 = Bidirectional(LSTM(lstm2, return_sequences = False, kernel_regularizer=l2(reg)), name='CompRep')(x3)
 
     Input2 = Input(shape = (AllTrainSignalsRef.shape[1], AllTrainSignalsRef.shape[2]))
     y1 = Bidirectional(LSTM(lstm1, kernel_regularizer=l2(reg), return_sequences = True))(Input2)
     y2 = Dropout(do)(y1)
     y3 = BatchNormalization(axis = -1, momentum = 0.99, epsilon = 0.001, center = True, scale = True)(y2)
-    y4 = SeqSelfAttention(attention_type=SeqSelfAttention.ATTENTION_TYPE_MUL,
-                    attention_activation='softmax',
-                    name='Attention2')(y3)
 
-    y5 = Bidirectional(LSTM(lstm2, return_sequences = True, kernel_regularizer=l2(reg)))(y4)
-    y6 = Dropout(do)(y5)
-    y7 = BatchNormalization(axis = -1, momentum = 0.99, epsilon = 0.001, center = True, scale = True)(y6)
-    y8 = Bidirectional(LSTM(lstm3, return_sequences = False, kernel_regularizer=l2(reg)), name='RefRep')(y7)
+    y4 = Bidirectional(LSTM(lstm2, return_sequences = False, kernel_regularizer=l2(reg)), name='RefRep')(y3)
 
-    subtracted = Subtract(name = 'final_rep')([y8, x8])
+    subtracted = Subtract(name = 'final_rep')([y4, x4])
 
     out = Dense(1, activation='sigmoid')(subtracted)
       
@@ -135,7 +121,7 @@ for run in Runs:
     
     # getting model predictions for testing participants of this fold
     os.chdir(DatasetPath)
-    TestIndsSplit = np.load("Dictionary_TestIndSplit.npy", allow_pickle = 'TRUE').item()
+    TestIndsSplit = np.load("Dictionary_TestIndSplit_AllParticipants.npy", allow_pickle = 'TRUE').item()
     
     TestParticipants = TestIndsSplit[f'split_{Split}']
 

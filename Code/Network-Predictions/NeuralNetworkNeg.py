@@ -16,24 +16,22 @@ import scipy.io
 # %% Paths
 
 # Replace the following directory with the location of the saved preprocessed data
-MatPath = r"D:\OneDrive\PerceptionAction\Preprocessed"
+MatPath = r"D:\OneDrive\PerceptionActionReview\Preprocessed"
 
 # Replace the following directory with the location where the datasets are saved
-ProjectPath = r"D:\OneDrive\PerceptionAction\Data"
+ProjectPath = r"D:\OneDrive\PerceptionActionReview\Data"
 DatasetPath = os.path.join(ProjectPath, 'DatasetsFolds')
 
 # Replace the following directory with the location where the model predictions should be saved
-save_path = r"D:\OneDrive\PerceptionAction\saved_predictions"
+save_path = r"D:\OneDrive\PerceptionActionReview\saved_predictions"
 
 Splits = np.arange(1, 11) #for the k-fold validation
-Runs = np.arange(1, 6) #for the 5 repititions
+Runs = np.arange(3, 5) #for the 5 repititions
 
 
 # %% runs neural network
 #include only position and grip force
 sigs = np.array([0, 3])
-
-stretch = int(input("Include negative stretch session? \n 1. No \n 2. Yes \n"))
 
 save_model = int(input("Would you like to save the trained networks? \n 1. Yes \n 2. No \n"))
 
@@ -42,28 +40,16 @@ for run in Runs:
   for Split in Splits:
     os.chdir(DatasetPath)
     
-    if stretch == 1:
-      #train
-      AllTrainSignalsComp = np.load(f'TrainSignalsComp_AllParticipants_Split{Split}.npy')
-      AllTrainSignalsRef = np.load(f'TrainSignalsRef_AllParticipants_Split{Split}.npy')
-      AllTrainPlabels = np.load(f'TrainPlabels_AllParticipants_Split{Split}.npy')
+    
+    #train
+    AllTrainSignalsComp = np.load(f'TrainSignalsComp_BothStretch_Split{Split}.npy')
+    AllTrainSignalsRef = np.load(f'TrainSignalsRef_BothStretch_Split{Split}.npy')
+    AllTrainPlabels = np.load(f'TrainPlabels_BothStretch_Split{Split}.npy')
 
-      #Test
-      AllTestSignalsComp = np.load(f'TestSignalsComp_AllParticipants_Split{Split}.npy')
-      AllTestSignalsRef = np.load(f'TestSignalsRef_AllParticipants_Split{Split}.npy')
-      AllTestPlabels = np.load(f'TestPlabels_AllParticipants_Split{Split}.npy')
-
-      
-    elif stretch == 2:
-      #train
-      AllTrainSignalsComp = np.load(f'TrainSignalsComp_BothStretch_Split{Split}.npy')
-      AllTrainSignalsRef = np.load(f'TrainSignalsRef_BothStretch_Split{Split}.npy')
-      AllTrainPlabels = np.load(f'TrainPlabels_BothStretch_Split{Split}.npy')
-
-      #Test
-      AllTestSignalsComp = np.load(f'TestSignalsComp_BothStretch_Split{Split}.npy')
-      AllTestSignalsRef = np.load(f'TestSignalsRef_BothStretch_Split{Split}.npy')
-      AllTestPlabels = np.load(f'TestPlabels_BothStretch_Split{Split}.npy')
+    #Test
+    AllTestSignalsComp = np.load(f'TestSignalsComp_BothStretch_Split{Split}.npy')
+    AllTestSignalsRef = np.load(f'TestSignalsRef_BothStretch_Split{Split}.npy')
+    AllTestPlabels = np.load(f'TestPlabels_BothStretch_Split{Split}.npy')
 
     
     # taking the desired combination of signals
@@ -87,27 +73,24 @@ for run in Runs:
     x1 = Bidirectional(LSTM(lstm1, kernel_regularizer=l2(reg), return_sequences = True))(Input1)
     x2 = Dropout(do)(x1)
     x3 = BatchNormalization(axis = -1, momentum = 0.99, epsilon = 0.001, center = True, scale = True)(x2)
-    x4 = SeqSelfAttention(attention_type=SeqSelfAttention.ATTENTION_TYPE_MUL,
-                    attention_activation='softmax',
-                    name='Attention1')(x3)
 
-    x8 = Bidirectional(LSTM(lstm3, return_sequences = False, kernel_regularizer=l2(reg)), name='CompRep')(x4)
+
+    x4 = Bidirectional(LSTM(lstm3, return_sequences = False, kernel_regularizer=l2(reg)), name='CompRep')(x3)
 
     Input2 = Input(shape = (AllTrainSignalsRef.shape[1], AllTrainSignalsRef.shape[2]))
     y1 = Bidirectional(LSTM(lstm1, kernel_regularizer=l2(reg), return_sequences = True))(Input2)
     y2 = Dropout(do)(y1)
     y3 = BatchNormalization(axis = -1, momentum = 0.99, epsilon = 0.001, center = True, scale = True)(y2)
-    y4 = SeqSelfAttention(attention_type=SeqSelfAttention.ATTENTION_TYPE_MUL,
-                    attention_activation='softmax',
-                    name='Attention2')(y3)
 
-    y8 = Bidirectional(LSTM(lstm3, return_sequences = False, kernel_regularizer=l2(reg)), name='RefRep')(y4)
 
-    subtracted = Subtract(name = 'final_rep')([y8, x8])
+    y4 = Bidirectional(LSTM(lstm3, return_sequences = False, kernel_regularizer=l2(reg)), name='RefRep')(y3)
+
+    subtracted = Subtract(name = 'final_rep')([y4, x4])
 
     out = Dense(1, activation='sigmoid')(subtracted)
       
     model = Model(inputs = [Input1, Input2], outputs = out)
+         
         
 
     def lr_scheduler(epoch, lr):
@@ -128,12 +111,11 @@ for run in Runs:
                         shuffle = True, epochs = 50, verbose = 1, callbacks = callbacks)
    
     #to save model:
-    options = ['AllParticipants', 'BothStretch']
       
     if save_model == 1:
       # Replace the following directory with the location where the model predictions should be saved
       os.chdir(save_path)  
-      model_name = f'Network_{options[stretch - 1]}_Split{Split}_Run{run}.h5'
+      model_name = f'Network_BothStretch_Split{Split}_Run{run}.h5'
       model.save(model_name)
       
     # getting model predictions for testing participants of this fold
@@ -145,29 +127,16 @@ for run in Runs:
     for i in TestParticipants:
       os.chdir(MatPath)
       
-      if stretch == 1:  
-        #comparison
-        comps = scipy.io.loadmat(f'CompSignals_SN{i}.mat')
-        comps = comps['AllCompSigs']
+      #comparison
+      comps = scipy.io.loadmat(f'CompSignals_BothStretch_SN{i}.mat')
+      comps = comps['AllCompSigs']
         
-        #standard
-        refs = scipy.io.loadmat(f'StandardSignals_SN{i}.mat')
-        refs = refs['AllRefSigs']
-        
-        comps = comps[:192, :, sigs]
-        refs = refs[:192, :, sigs]
-     
-      elif stretch == 2:
-        #comparison
-        comps = scipy.io.loadmat(f'CompSignals_BothStretch_SN{i}.mat')
-        comps = comps['AllCompSigs']
-        
-        #standard
-        refs = scipy.io.loadmat(f'StandardSignals_BothStretch_SN{i}.mat')
-        refs = refs['AllRefSigs']
+      #standard
+      refs = scipy.io.loadmat(f'StandardSignals_BothStretch_SN{i}.mat')
+      refs = refs['AllRefSigs']
     
-        comps = comps[:, :, sigs]
-        refs = refs[:, :, sigs]
+      comps = comps[:, :, sigs]
+      refs = refs[:, :, sigs]
       
       outs = model.predict([comps, refs])
       preds = np.zeros_like(outs)
@@ -180,8 +149,7 @@ for run in Runs:
       #saving predictions      
       os.chdir(save_path)  
       
-      scipy.io.savemat(f'Preds_SN{i}_{options[stretch - 1]}_Run{run}.mat', mdic1)
-
+      scipy.io.savemat(f'Preds_SN{i}_BothStretch_AttAtt_Run{run}.mat', mdic1)
 
 
 
