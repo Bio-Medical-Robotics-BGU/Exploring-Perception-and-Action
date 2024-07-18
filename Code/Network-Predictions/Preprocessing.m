@@ -4,6 +4,8 @@
 % Interpolation
 % Creating the matrices and vectors containing each participants
 % preprocessed data
+
+project_path = "C:\Users\hannako\Downloads\ExploringPerceptionAction\ExploringPerceptionandAction";
 %%
 forvector = [1:21, 23:39]; %which participants to include (two outlier participants were removed)
 ForVector = [25:216, 241:432]; %the relevant trials (excluding training trials)
@@ -24,8 +26,8 @@ for k = 1:length(forvector) %loop that runs over all the participants
     
     filename = ['SN', num2str(h), '.mat'];
     
-    %in following line - replace directory to data location
-    cd D:\OneDrive\PerceptionActionReview\Data\Data;
+    %data location
+    cd(fullfile(project_path, "Data\Participant-Data"));
     
     data = load(filename);
     data = data.M;
@@ -189,8 +191,9 @@ for k = 1:length(forvector) %loop that runs over all the participants
         
     end%end of running of k's trials
     
-    %replace following directory with desired location for saving data
-    cd D:\OneDrive\PerceptionActionReview\Preprocessed;
+    %location for saving data
+    mkdir(fullfile(project_path, 'Preprocessed'));
+    cd(fullfile(project_path, 'Preprocessed'));
     if ds == 1
         save(['CompSignals_SN', num2str(h)], 'AllCompSigs')
         save(['StandardSignals_SN', num2str(h)], 'AllRefSigs')
