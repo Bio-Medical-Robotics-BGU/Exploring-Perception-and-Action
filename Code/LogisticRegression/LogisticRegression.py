@@ -8,15 +8,16 @@ import scipy.io
 
 # %% Paths
 
-# Replace the following directory with the location of the saved preprocessed data
-MatPath = r"D:\OneDrive\PerceptionActionReview\Preprocessed"
+# Replace the following directory with the project directory
+base = "D:\OneDrive\PerceptionActionReview"
+MatPath = os.path.join(base, "Preprocessed")
 
-# Replace the following directory with the location of the saved fold indices, and to which the datasets will be saved
-ProjectPath = r"D:\OneDrive\PerceptionActionReview\Data"
+# the location of the saved fold indices, and to which the datasets will be saved
+ProjectPath = os.path.join(base, "Data") 
 DatasetPath = os.path.join(ProjectPath, 'DatasetsFolds')
 
-# Replace the following directory with the location where the model predictions should be saved
-save_path = r"D:\OneDrive\PerceptionActionReview\saved_predictions"
+# where the model predictions will be saved
+save_path = os.path.join(base, "saved_predictions") 
 
 Splits = np.arange(1, 11)
 
