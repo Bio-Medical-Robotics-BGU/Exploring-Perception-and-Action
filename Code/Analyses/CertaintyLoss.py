@@ -10,15 +10,16 @@ import numpy as np
 plt.rcParams["font.family"] = "Times New Roman"
 
 # %% Paths
-# Replace the following directory with the location of the saved preprocessed data
-MatPath = r"D:\OneDrive\PerceptionActionReview\Preprocessed"
+# Replace the following directory with the project directory
+base = "D:\OneDrive\PerceptionActionReview"
+MatPath = os.path.join(base, "Preprocessed")
 
-# Replace the following directory with the location where the datasets are saved
-ProjectPath = r"D:\OneDrive\PerceptionActionReview\Data"
+# the location where the datasets are saved
+ProjectPath = os.path.join(base, "Data") 
 DatasetPath = os.path.join(ProjectPath, 'DatasetsFolds')
 
-# Replace the following directory with the location where the model predictions should be saved
-save_path = r"D:\OneDrive\PerceptionActionReview\saved_predictions"
+# the location where the model predictions should be saved
+save_path = os.path.join(base, "saved_predictions") 
 
 # %% Setting up model names
 run = int(input("Which run would you like to use (number between 1 - 5)? \n"))
