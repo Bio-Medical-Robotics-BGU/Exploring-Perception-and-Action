@@ -21,7 +21,7 @@ MatPath = os.path.join(base, "Preprocessed")
 ProjectPath = os.path.join(base, "Data") 
 DatasetPath = os.path.join(ProjectPath, 'DatasetsFolds')
 
-# Replace the following directory with the location where the model predictions should be saved
+# the location where the model predictions should be saved
 save_path = os.path.join(base, "saved_predictions") 
 
 Splits = np.arange(1, 11) #for the k-fold validation
