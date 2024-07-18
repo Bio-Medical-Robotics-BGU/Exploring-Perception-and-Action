@@ -11,6 +11,8 @@ base = "D:\OneDrive\PerceptionActionReview"
 MatPath = os.path.join(base, "Preprocessed")
 
 ProjectPath = os.path.join(base, "saved_predictions") 
+if not os.path.exists(ProjectPath):
+    os.makedirs(ProjectPath)
 
 # %% Negative
 Participants = np.arange(1, 41)
