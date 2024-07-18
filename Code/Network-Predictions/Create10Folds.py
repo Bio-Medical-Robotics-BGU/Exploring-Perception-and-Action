@@ -8,11 +8,9 @@ import numpy as np
 from scipy.io import savemat
 
 # %% Paths
-# Replace the following directory with the location of the saved preprocessed data
-MatPath = r"D:\OneDrive\PerceptionAction\Preprocessed"
 
-# Replace the following directory with the location of the saved fold indices, and to which the datasets will be saved
-ProjectPath = r"D:\OneDrive\PerceptionAction\Data"
+# Replace the following directory with the location to which to save the fold indices
+ProjectPath = r"D:\OneDrive\PerceptionActionReview\Data"
 DatasetPath = os.path.join(ProjectPath, 'DatasetsFolds')
 
 k = 10
@@ -35,12 +33,7 @@ for train_index, test_index in kf.split(Participants):
 
   i += 1
   
-os.chdir(DatasetPath)
-np.save("Dictionary_TrainIndSplit.npy", TrainIndsSplit)
-np.save("Dictionary_TestIndSplit.npy", TestIndsSplit)
 
-#to save for opening in MATLAB
-savemat('TestIndsSplit.mat', TestIndsSplit, oned_as='row')
 
 # %% Randomly adding in the four negative effect participants
 AddParticipants = np.array([2, 4, 5, 21])

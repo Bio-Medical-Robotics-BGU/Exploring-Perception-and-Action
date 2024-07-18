@@ -7,12 +7,11 @@ import scipy.io
 
 # Paths
 # Replace the following directory with the location of the saved preprocessed data
-MatPath = r"D:\OneDrive\PerceptionAction\Preprocessed"
+MatPath = r"D:\OneDrive\PerceptionActionReview\Preprocessed"
 
 # Replace the following directory with the location of the saved fold indices, and to which the datasets will be saved
-ProjectPath = r"D:\OneDrive\PerceptionAction\Data"
+ProjectPath = r"D:\OneDrive\PerceptionActionReview\Data"
 DatasetPath = os.path.join(ProjectPath, 'DatasetsFolds')
-
 
 k = 10
 
@@ -20,16 +19,11 @@ k = 10
 os.chdir(DatasetPath)
 
 flag = 1
-Dataset = int(input("Which dataset would you like to create? \n 1. Dataset 1 (non-negative participants) \n 2. Dataset 2 (all participants) \n 3. Dataset 3 (both stretch conditions)"))
+Dataset = int(input("Which dataset would you like to create? \n 1. Dataset 1 (all participants) \n 2. Dataset 2 (both stretch conditions)"))
 
 while (flag):
-    if Dataset == 1:
-        #load splits for the non-negative effect participants
-        TrainIndsSplit = np.load("Dictionary_TrainIndSplit.npy", allow_pickle = 'TRUE').item()
-        TestIndsSplit = np.load("Dictionary_TestIndSplit.npy", allow_pickle = 'TRUE').item()
-        flag = 0
     
-    elif Dataset == 2 or Dataset == 3:
+    if Dataset == 1 or Dataset == 2:
         #load splits for all participants (this split is also used for Dataset 3, which includes both the positive and 
         #negative stretch trials for all the participants)
         TrainIndsSplit = np.load("Dictionary_TrainIndSplit_AllParticipants.npy", allow_pickle = 'TRUE').item()
@@ -37,8 +31,9 @@ while (flag):
         flag = 0
     
     else:
-        print("Please input 1, 2 or 3 \n")
-        Dataset = int(input("Which dataset would you like to create? \n 1. Dataset 1 (non-negative participants) \n 2. Dataset 2 (all participants) \n 3. Dataset 3 (both stretch conditions)"))
+        print("Please input 1 or 2 \n")
+        Dataset = int(input("Which dataset would you like to create? \n 1. Dataset 1 (all participants) \n 2. Dataset 2 (both stretch conditions)"))
+
         flag = 1
         
 # Taking Current Split 
@@ -55,14 +50,14 @@ for Split in np.arange(1, k + 1):
     for i in TrainingParticipants:
         print(i)
         #signals
-        if Dataset == 1 or Dataset == 2:
+        if Dataset == 1:
             sigs_comp = scipy.io.loadmat(f'CompSignals_SN{i}.mat') 
         else:
             #for both positive and negative stretch:
             sigs_comp = scipy.io.loadmat(f'CompSignals_BothStretch_SN{i}.mat') 
         sigs_comp = sigs_comp['AllCompSigs']
       
-        if Dataset == 1 or Dataset == 2:
+        if Dataset == 1:
             sigs_ref = scipy.io.loadmat(f'StandardSignals_SN{i}.mat')
         else:
             #for both positive and negative stretch:
@@ -70,7 +65,7 @@ for Split in np.arange(1, k + 1):
         sigs_ref = sigs_ref['AllRefSigs']
       
         #participant answers
-        if Dataset == 1 or Dataset == 2:
+        if Dataset == 1:
             panswers = scipy.io.loadmat(f'Labels_SN{i}.mat')
         else:
             #for both positive and negative stretch:
@@ -78,7 +73,7 @@ for Split in np.arange(1, k + 1):
         panswers = panswers['AllPlabels']
       
         #Kcomps
-        if Dataset == 1 or Dataset == 2:
+        if Dataset == 1:
             kcomps = scipy.io.loadmat(f'Kcomps_SN{i}.mat')
         else:
             #for both positive and negative stretch:
@@ -86,7 +81,7 @@ for Split in np.arange(1, k + 1):
         kcomps = kcomps['AllKcomps']
       
         #Tactor discplacement gains
-        if Dataset == 1 or Dataset == 2:
+        if Dataset == 1:
             tdgains = scipy.io.loadmat(f'TdGains_SN{i}.mat')
         else:
             #for both positive and negative stretch:
@@ -114,7 +109,7 @@ for Split in np.arange(1, k + 1):
     for i in TestParticipants:
         print(i)
         #signals
-        if Dataset == 1 or Dataset == 2:
+        if Dataset == 1:
             sigs_comp = scipy.io.loadmat(f'CompSignals_SN{i}.mat')
             sigs_comp = sigs_comp['AllCompSigs'][:192]
         else:
@@ -122,7 +117,7 @@ for Split in np.arange(1, k + 1):
             sigs_comp = scipy.io.loadmat(f'CompSignals_BothStretch_SN{i}.mat') 
             sigs_comp = sigs_comp['AllCompSigs']
       
-        if Dataset == 1 or Dataset == 2:
+        if Dataset == 1:
             sigs_ref = scipy.io.loadmat(f'StandardSignals_SN{i}.mat')
             sigs_ref = sigs_ref['AllRefSigs'][:192]
         else:
@@ -131,7 +126,7 @@ for Split in np.arange(1, k + 1):
             sigs_ref = sigs_ref['AllRefSigs']
       
         #participant answers
-        if Dataset == 1 or Dataset == 2:
+        if Dataset == 1:
             panswers = scipy.io.loadmat(f'Labels_SN{i}.mat')
             panswers = panswers['AllPlabels'][:192]
         else:
@@ -140,7 +135,7 @@ for Split in np.arange(1, k + 1):
             panswers = panswers['AllPlabels']
       
         #Kcomps
-        if Dataset == 1 or Dataset == 2:
+        if Dataset == 1:
             kcomps = scipy.io.loadmat(f'Kcomps_SN{i}.mat')
             kcomps = kcomps['AllKcomps'][:192]
         else:
@@ -149,7 +144,7 @@ for Split in np.arange(1, k + 1):
             kcomps = kcomps['AllKcomps']
       
         #Tactor discplacement gains
-        if Dataset == 1 or Dataset == 2:
+        if Dataset == 1:
             tdgains = scipy.io.loadmat(f'TdGains_SN{i}.mat')
             tdgains = tdgains['AllTdGains'][:192]
         else:
@@ -178,25 +173,8 @@ for Split in np.arange(1, k + 1):
     
     os.chdir(DatasetPath)
     
+
     if Dataset == 1:
-        # Saving - for non-negative participants 
-        #train
-        np.save(f'TrainSignalsComp_Split{Split}', TrainSigsCompNeg)
-        np.save(f'TrainSignalsRef_Split{Split}', TrainSigsRefNeg)
-        
-        np.save(f'TrainPlabels_Split{Split}', TrainPlabelsNeg)
-        np.save(f'TrainKComps_Split{Split}', TrainKCompsNeg)
-        np.save(f'TrainTdGains_Split{Split}', TrainTdGainsNeg)
-        
-        #test
-        np.save(f'TestSignalsComp_Split{Split}', TestSigsCompNeg)
-        np.save(f'TestSignalsRef_Split{Split}', TestSigsRefNeg)
-        
-        np.save(f'TestPlabels_Split{Split}', TestPlabelsNeg)
-        np.save(f'TestKComps_Split{Split}', TestKCompsNeg)
-        np.save(f'TestTdGains_Split{Split}', TestTdGainsNeg)
-    
-    if Dataset == 2:
         # Saving - for all participants
         #train
         np.save(f'TrainSignalsComp_AllParticipants_Split{Split}', TrainSigsCompNeg)
@@ -215,7 +193,7 @@ for Split in np.arange(1, k + 1):
         np.save(f'TestTdGains_AllParticipants_Split{Split}', TestTdGainsNeg)
         
     
-    if Dataset == 3:
+    if Dataset == 2:
         # Saving - for all participants with both positive and negative stretch
         #train
         np.save(f'TrainSignalsComp_BothStretch_Split{Split}', TrainSigsCompNeg)
