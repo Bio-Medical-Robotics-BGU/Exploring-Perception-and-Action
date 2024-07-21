@@ -7,7 +7,6 @@ from tensorflow.keras.regularizers import l2
 from tensorflow.keras.callbacks import LearningRateScheduler
 import tensorflow as tf
 import tensorflow.keras.backend as K
-from keras_self_attention import SeqSelfAttention
 
 import os
 import numpy as np
