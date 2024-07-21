@@ -17,7 +17,7 @@ DatasetPath = os.path.join(ProjectPath, 'DatasetsFolds')
 k = 10
 
 # %% Loading splits
-os.chdir(DatasetPath)
+os.chdir(ProjectPath)
 
 flag = 1
 Dataset = int(input("Which dataset would you like to create? \n 1. Dataset 1 (all participants) \n 2. Dataset 2 (both stretch conditions)"))
