@@ -1,9 +1,11 @@
 %% This code analyses the network predictions - creates the real and predicted curves (for 
 % example, those shown in Fig. 6), and computes the regression of the
 % predicted augmentation against the real one, and compares the real and
-% predicted curves in each condition. (Fig. 6, 8, 9, and 10).
-% This also contains the code for the percentage of erros (model or participant
-% per comparison stiffness level (Fig. 7(a-f))).
+% predicted curves in each condition. (Fig. 6, 8, and 9).
+% This also contains the code for the percentage of erros
+% per comparison stiffness level (Fig. 7(a-c))).
+
+%replace following directory with the project path
 clear all; clc; 
 project_path = "C:\Users\hannako\Downloads\ExploringPerceptionandAction\ExploringPerceptionandAction";
 
