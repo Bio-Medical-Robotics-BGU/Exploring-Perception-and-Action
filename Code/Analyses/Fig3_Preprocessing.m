@@ -1,13 +1,15 @@
 %% This code creates Fig. 3 in the manuscript - the figure that demonstrates the 
 % preprocessing of the signals
+project_path = "C:\Users\hannako\Downloads\ExploringPerceptionandAction\ExploringPerceptionandAction";
+
 %%
 ForVector = [25:216, 241:432]; %all the trials
 
 k = 8; %take a signal from participant 8
 filename = ['SN', num2str(k), '.mat'];
 
-%in following line - replace directory to data location
-cd D:\OneDrive\PerceptionAction\Data\Data;
+%data location
+cd(fullfile(project_path, 'Data', 'Participant-Data'))
 
 data = load(filename);
 data = data.M;
