@@ -1,26 +1,12 @@
 %% This code analyses the network predictions - creates the real and predicted curves and computes the 
 % regression of the predicted augmentation against the real one, and compares the real and
-% predicted curves in each condition for both stretch sessions (Fig. 11).
+% predicted curves in each condition for both stretch sessions (Fig. 10).
 
-%replace following directory with the location of the saved network
-%predictions
+%replace following directory with the project path
 clear all; clc; 
-project_path = "C:\Users\hannako\Downloads\ExploringPerceptionAction\ExploringPerceptionandAction";
+project_path = "C:\Users\hannako\Downloads\ExploringPerceptionandAction\ExploringPerceptionandAction";
 
-cd(project_path);
-addpath(project_path)
 addpath(genpath(project_path))
-
-% the location of the saved network
-%predictions
-saved_path = fullfile(project_path, 'saved_predictions');
-
-%the location of the saved preprocessed data
-data_path = fullfile(project_path, 'Preprocessed'); 
-
-% the location of the codes
-project_path = fullfile(project_path, 'Code', 'Analyses');  
-
 
 %load the splits
 folds = load('TestIndsSplit_AllParticipants.mat');
@@ -54,7 +40,6 @@ for f = 1:10 %run over the 10 folds
         count = count + 1; 
 
        
-        cd(data_path)
         Labels = load(['Labels_BothStretch_SN', num2str(participants(p)), '.mat']);
         Labels = Labels.AllPlabels;
         
@@ -65,11 +50,9 @@ for f = 1:10 %run over the 10 folds
         TdGains = TdGains.AllTdGains;
 
         %getting predictions
-        cd(saved_path)
         preds = load(['Preds_SN', num2str(participants(p)), '_BothStretch_Att_Run', Run, '.mat']);
         preds = preds.Preds;
 
-        cd(project_path)
         [pses, pred_pses, jnds, pred_jnds] = PsychometricMatsBothStretch(KComps, TdGains, Labels, preds);
 
 
