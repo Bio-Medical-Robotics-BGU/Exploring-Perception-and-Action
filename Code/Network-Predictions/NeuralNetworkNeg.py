@@ -29,7 +29,7 @@ if not os.path.exists(save_path):
     os.makedirs(save_path)
   
 Splits = np.arange(1, 11) #for the k-fold validation
-Runs = np.arange(3, 5) #for the 5 repititions
+Runs = np.arange(1, 6) #for the 5 repititions
 
 
 # %% runs neural network
