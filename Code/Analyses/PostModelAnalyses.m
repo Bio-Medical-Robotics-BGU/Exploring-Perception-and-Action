@@ -5,21 +5,10 @@
 % This also contains the code for the percentage of erros (model or participant
 % per comparison stiffness level (Fig. 7(a-f))).
 clear all; clc; 
-project_path = "C:\Users\hannako\Downloads\ExploringPerceptionAction\ExploringPerceptionandAction";
+project_path = "C:\Users\hannako\Downloads\ExploringPerceptionandAction\ExploringPerceptionandAction";
 
-cd(project_path);
-addpath(project_path)
 addpath(genpath(project_path))
 
-% the location of the saved network
-%predictions
-saved_path = fullfile(project_path, 'saved_predictions');
-
-%the location of the saved preprocessed data
-data_path = fullfile(project_path, 'Preprocessed'); 
-
-% the location of the codes
-project_path = fullfile(project_path, 'Code', 'Analyses');  
 
 %load the splits
 folds = load('TestIndsSplit_AllParticipants.mat');
@@ -29,8 +18,8 @@ fns = fieldnames(folds);
 
 %getting the model type from user
 % model_name = input('What network would you like (e.g., which signals or parts of the network are included?) \n' ,'s');
-model_name = 'LogisticRegression';
-runs = input('Which predictions would you like to use? \n 1. Model \n 2. Network \n');
+model_name = input('What model would you like (model name)? \n', 's');
+runs = input('Model or network? \n 1. Model \n 2. Network \n');
 
 if runs == 2
     Run = input('Which number run would you like? \n', 's');
@@ -68,7 +57,6 @@ for f = 1:10 %run over the 10 folds
 
         count = count + 1;
 
-        cd(data_path)
         Labels = load(['Labels_SN', num2str(participants(p)), '.mat']);
         Labels = Labels.AllPlabels(1:192);
         
@@ -79,7 +67,6 @@ for f = 1:10 %run over the 10 folds
         TdGains = TdGains.AllTdGains(1:192);
 
         %getting predictions
-        cd(saved_path)
         if runs == 2
             preds = load(['Preds_SN', num2str(participants(p)), '_', model_name, '_Run', Run, '.mat']);
         else
@@ -87,7 +74,6 @@ for f = 1:10 %run over the 10 folds
         end
         preds = preds.Preds;
 
-        cd(project_path)
         [pses, pred_pses, jnds, pred_jnds] = PsychometricMats(KComps, TdGains, Labels, preds);
 
         RealPSEs = [RealPSEs; pses];
