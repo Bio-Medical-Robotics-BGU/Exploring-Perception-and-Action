@@ -166,7 +166,9 @@ for k = 1:length(forvector)
     end%end of running of k's trials
         
     %location for saving data
-    mkdir(fullfile(project_path, 'Preprocessed'));
+    if ~exist(fullfile(project_path, 'Preprocessed'), 'dir')
+       mkdir(fullfile(project_path, 'Preprocessed'))
+    end
     cd(fullfile(project_path, 'Preprocessed'));
     save(['Features_', filename(1:end-4)], 'AllFeatures');
    
