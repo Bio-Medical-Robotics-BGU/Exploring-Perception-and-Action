@@ -1,5 +1,8 @@
 %% This code creates Fig. 4, which describes the metrics computed from the 
 % psychometric curves
+project_path = "C:\Users\hannako\Downloads\ExploringPerceptionandAction\ExploringPerceptionandAction";
+addpath(genpath(fullfile(project_path, 'Code')));
+
 %% Blue curves
 %%
 PsychometricData_F=85-[140:-10:30]';
