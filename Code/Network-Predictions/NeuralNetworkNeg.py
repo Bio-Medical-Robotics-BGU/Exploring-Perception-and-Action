@@ -152,7 +152,7 @@ for run in Runs:
       #saving predictions      
       os.chdir(save_path)  
       
-      scipy.io.savemat(f'Preds_SN{i}_BothStretch_AttAtt_Run{run}.mat', mdic1)
+      scipy.io.savemat(f'Preds_SN{i}_BothStretch_Run{run}.mat', mdic1)
 
 
 
