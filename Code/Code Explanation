@@ -26,6 +26,7 @@ Analyses:
   1. CertaintyLoss (Python code) - computes the certainty values for the predictions of each network for each fold for one of the runs, and creates the graphs for
      Fig. 7(d-f).
   2. Fig3_Preprocessing (MATLAB code) - creates Fig. 3 in the manuscript, which demonstrates the preprocessing and the raw action signals. 
+  3. PreprocessingHelper (MATLAB codeO - called by Fig3_Preprocessing as part of the plotting.
   3. Fig4_PsychometricCurveMetrics (MATLAB code) - creates the psychometric curves for Fig. 4 in the manuscript, which demonstrate the metrics. 
   4. PsychometricFitting_ForMetricDescription (MATLAB code) - called by Fig4_PsychometricCurveMetrics to create the psychometric curves.
   5. PostModelAnalyses (MATLAB code) - creates the real and predicted psychometric curves based on the participants answers and a model's predictions (model or 
