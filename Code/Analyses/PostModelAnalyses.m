@@ -118,10 +118,16 @@ b.CData(2,:) = [255 159 159]./255;
 b.CData(3,:) = [0 121 204]./255;
 b.CData(4,:) = [192 0 0]./255;
 
-errorbar(0.5, mean(RealPSEs(:, 1)), std(RealPSEs(:, 1))/2, 'color', 'k', 'linewidth', 0.5)
-errorbar(1, mean(PredPSEs(:, 1)), std(PredPSEs(:, 1))/2, 'color', 'k', 'linewidth', 0.5)
-errorbar(2, mean(RealPSEs(:, 2)), std(RealPSEs(:, 2))/2, 'color', 'k', 'linewidth', 0.5)
-errorbar(2.5, mean(PredPSEs(:, 2)), std(PredPSEs(:, 2))/2, 'color', 'k', 'linewidth', 0.5)
+CIr1 = bootci(2000, @mean, RealPSEs(:, 1));
+CIr2 = bootci(2000, @mean, RealPSEs(:, 2));
+CIp1 = bootci(2000, @mean, PredPSEs(:, 1));
+CIp2 = bootci(2000, @mean, PredPSEs(:, 2));
+
+errorbar(0.5, mean(RealPSEs(:, 1)), mean(RealPSEs(:, 1)) - CIr1(1), CIr1(2) - mean(RealPSEs(:, 1)), 'color', 'k', 'linewidth', 0.5)
+errorbar(1, mean(PredPSEs(:, 1)), mean(PredPSEs(:, 1)) - CIp1(1), CIp1(2) - mean(PredPSEs(:, 1)), 'color', 'k', 'linewidth', 0.5)
+errorbar(2, mean(RealPSEs(:, 2)), mean(RealPSEs(:, 2)) - CIr2(1), CIr2(2)-  mean(RealPSEs(:, 2)), 'color', 'k', 'linewidth', 0.5)
+errorbar(2.5, mean(PredPSEs(:, 2)), mean(PredPSEs(:, 2))- CIp2(1), CIp2(2) - mean(PredPSEs(:, 2)), 'color', 'k', 'linewidth', 0.5)
+
 
 set(gca, 'fontname', 'Times New Roman', 'fontsize', 14)
 
