@@ -92,25 +92,33 @@ hold on
 b = bar([0.5, 1, 2, 2.5, 3.5, 4, 5, 5.5],...
     [mean(RealPSEs(:, 1)), mean(PredPSEs(:, 1)), mean(RealPSEs(:, 2)), mean(PredPSEs(:, 2)), mean(RealPSEs(:, 3)), mean(PredPSEs(:, 3)), mean(RealPSEs(:, 4)), mean(PredPSEs(:, 4))]);
 b.FaceColor = 'flat';
+CIr1 = bootci(2000, @mean, RealPSEs(:, 1));
+CIp1 = bootci(2000, @mean, PredPSEs(:, 1));
 b.CData(1,:) = [113 198 255]./255;
-errorbar(0.5, mean(RealPSEs(:, 1)), std(RealPSEs(:, 1))/2, 'color', 'k', 'linewidth', 0.5)
+errorbar(0.5, mean(RealPSEs(:, 1)), mean(RealPSEs(:, 1)) - CIr1(1), CIr1(2) - mean(RealPSEs(:, 1)), 'color', 'k', 'linewidth', 0.5)
 b.CData(2,:) = [255 159 159]./255;
-errorbar(1, mean(PredPSEs(:, 1)), std(PredPSEs(:, 1))/2, 'color', 'k', 'linewidth', 0.5)
+errorbar(1, mean(PredPSEs(:, 1)), mean(PredPSEs(:, 1)) - CIp1(1), CIp1(2) - mean(PredPSEs(:, 1)), 'color', 'k', 'linewidth', 0.5)
 
+CIr2 = bootci(2000, @mean, RealPSEs(:, 2));
+CIp2 = bootci(2000, @mean, PredPSEs(:, 2));
 b.CData(3,:) = [0 121 204]./255;
-errorbar(2, mean(RealPSEs(:, 2)), std(RealPSEs(:, 2))/2, 'color', 'k', 'linewidth', 0.5)
+errorbar(2, mean(RealPSEs(:, 2)), mean(RealPSEs(:, 2)) - CIr2(1), CIr2(2)-  mean(RealPSEs(:, 2)), 'color', 'k', 'linewidth', 0.5)
 b.CData(4,:) = [192 0 0]./255;
-errorbar(2.5, mean(PredPSEs(:, 2)), std(PredPSEs(:, 2))/2, 'color', 'k', 'linewidth', 0.5)
+errorbar(2.5, mean(PredPSEs(:, 2)), mean(PredPSEs(:, 2))- CIp2(1), CIp2(2) - mean(PredPSEs(:, 2)), 'color', 'k', 'linewidth', 0.5)
 
+CIr3 = bootci(2000, @mean, RealPSEs(:, 3));
+CIp3 = bootci(2000, @mean, PredPSEs(:, 3));
 b.CData(5,:) = [208 144 248]./255;
-errorbar(3.5, mean(RealPSEs(:, 3)), std(RealPSEs(:, 3))/2, 'color', 'k', 'linewidth', 0.5)
+errorbar(3.5, mean(RealPSEs(:, 3)), mean(RealPSEs(:, 3)) - CIr3(1), CIr3(2)-  mean(RealPSEs(:, 3)), 'color', 'k', 'linewidth', 0.5)
 b.CData(6,:) = [248 203 173]./255;
-errorbar(4, mean(PredPSEs(:, 3)), std(PredPSEs(:, 3))/2, 'color', 'k', 'linewidth', 0.5)
+errorbar(4, mean(PredPSEs(:, 3)), mean(PredPSEs(:, 3))- CIp3(1), CIp3(2) - mean(PredPSEs(:, 3)), 'color', 'k', 'linewidth', 0.5)
 
+CIr4 = bootci(2000, @mean, RealPSEs(:, 4));
+CIp4 = bootci(2000, @mean, PredPSEs(:, 4));
 b.CData(7,:) = [144 14 224]./255;
-errorbar(5, mean(RealPSEs(:, 4)), std(RealPSEs(:, 4))/2, 'color', 'k', 'linewidth', 0.5)
+errorbar(5, mean(RealPSEs(:, 4)), mean(RealPSEs(:, 4)) - CIr4(1), CIr4(2)-  mean(RealPSEs(:, 4)), 'color', 'k', 'linewidth', 0.5)
 b.CData(8,:) = [197 90 17]./255;
-errorbar(5.5, mean(PredPSEs(:, 4)), std(PredPSEs(:, 4))/2, 'color', 'k', 'linewidth', 0.5)
+errorbar(5.5, mean(PredPSEs(:, 4)), mean(PredPSEs(:, 4))- CIp4(1), CIp4(2) - mean(PredPSEs(:, 4)), 'color', 'k', 'linewidth', 0.5)
 
 set(gca, 'fontname', 'Times New Roman', 'fontsize', 14)
 
