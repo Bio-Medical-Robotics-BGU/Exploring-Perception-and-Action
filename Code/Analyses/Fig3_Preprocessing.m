@@ -3,7 +3,7 @@
 %% Choose participant for plotting and get data
 ForVector = [25:216, 241:432]; %all the trials
 
-k = 8; %take a signal from participant 8
+k = 13; %take a signal from participant 13
 filename = ['SN', num2str(k), '.mat'];
 
 %in following line - replace directory to data location
@@ -70,12 +70,12 @@ yd = filtfilt(d2, y);
 vd = filtfilt(d2, v);
 
 %% Raw
-PreprocessingHelper(y, t, surface_label, y, 1, 'Position [mm]')
-PreprocessingHelper(v, t, surface_label, y, 0, 'Velocity [mm/s]')
-PreprocessingHelper(gf, t, surface_label, y, 0, 'Grip Force [N]')
+PreprocessingHelper(y, t, surface_label, y, 1, 'Position [mm]', 1)
+PreprocessingHelper(v, t, surface_label, y, 0, 'Velocity [mm/s]', 1)
+PreprocessingHelper(gf, t, surface_label, y,0, 'Grip Force [N]', 1)
 
 %% Filtered
-PreprocessingHelper(yd, t, surface_label, y, 1, 'Position [mm]')
-PreprocessingHelper(vd, t, surface_label, y, 0, 'Velocity [mm/s]')
-PreprocessingHelper(gfd, t, surface_label, y, 0, 'Grip Force [N]')
+PreprocessingHelper(yd, t, surface_label, y, 1, 'Position [mm]', 0)
+PreprocessingHelper(vd, t, surface_label, y, 0, 'Velocity [mm/s]', 0)
+PreprocessingHelper(gfd, t, surface_label, y, 0, 'Grip Force [N]', 0)
 
