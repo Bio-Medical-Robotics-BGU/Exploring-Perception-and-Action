@@ -1,4 +1,4 @@
-function PreprocessingHelper(sig, t, surface_label, y, p, yl)
+function PreprocessingHelper(sig, t, surface_label, y, p, yl, raw)
 %This function plots the data for the raw and preprocessed signals
 %figure.
 %Inputs:
@@ -11,6 +11,8 @@ function PreprocessingHelper(sig, t, surface_label, y, p, yl)
 %   describing where the object is. In the paper, we did this only for the
 %   position signal.
 %   yl - ylabel (string)
+%   raw - 0 or 1. Defines if we want to plot as raw or with preprocessing
+%   information
 
 %% interpolating signals for smoother plotting due to the breaking up of the
 %signals into seperate parts
@@ -100,12 +102,23 @@ sig_ref_out = [sig_ref_out(1:jumps_ref_out(end) + length(jumps_ref_out) - 1); Na
 %% Plotting
 fig = figure;
 hold on
-plot(t_ref_in, sig_ref_in, 'color', [209, 1, 36]./255, 'linewidth', 2);
-plot(t_comp_in, sig_comp_in, 'k', 'linewidth', 2);
 
-plot(t_ref_out, sig_ref_out, 'color', [255, 183, 195]./255, 'linewidth', 2, 'linestyle', '--');
-plot(t_comp_out, sig_comp_out, 'color', [0.6, 0.6, 0.6], 'linewidth', 2, 'linestyle', '--');
-
+if raw == 0
+    
+    plot(t_ref_in, sig_ref_in, 'color', [209, 1, 36]./255, 'linewidth', 2);
+    plot(t_comp_in, sig_comp_in, 'k', 'linewidth', 2);
+    
+    plot(t_ref_out, sig_ref_out, 'color', [255, 183, 195]./255, 'linewidth', 2, 'linestyle', '--');
+    plot(t_comp_out, sig_comp_out, 'color', [0.6, 0.6, 0.6], 'linewidth', 2, 'linestyle', '--');
+else
+    
+    plot(t_ref_in, sig_ref_in, 'color', [255, 183, 195]./255, 'linewidth', 2);
+    plot(t_comp_in, sig_comp_in, 'color', [0.6, 0.6, 0.6], 'linewidth', 2);
+    
+    plot(t_ref_out, sig_ref_out, 'color', [255, 183, 195]./255, 'linewidth', 2);
+    plot(t_comp_out, sig_comp_out, 'color', [0.6, 0.6, 0.6], 'linewidth', 2);
+end
+    
 fig.Position = [100 100 700 200];
 
 ys = get(gca, 'ylim');
@@ -120,7 +133,7 @@ end
 set(gca, 'fontname', 'Times New Roman', 'fontsize', 12)
 xlabel('Time [s]', 'fontname', 'Times New Roman', 'fontsize', 14)
 ylabel(yl, 'fontname', 'Times New Roman', 'fontsize', 14)
-xlim([min(t), 6.85])
+xlim([min(t), 5.9])
 
 box on
 
