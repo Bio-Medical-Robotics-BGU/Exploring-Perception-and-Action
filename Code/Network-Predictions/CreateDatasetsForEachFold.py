@@ -13,6 +13,8 @@ MatPath = os.path.join(base, "Preprocessed")
 # the location of the saved fold indices, and to which the datasets are be saved
 ProjectPath = os.path.join(base, "Data") 
 DatasetPath = os.path.join(ProjectPath, 'DatasetsFolds')
+if not os.path.exists(DatasetPath):
+    os.makedirs(DatasetPath)
 
 k = 10
 
