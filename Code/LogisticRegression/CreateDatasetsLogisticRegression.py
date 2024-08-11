@@ -9,6 +9,7 @@ import scipy.io
 # Replace the following directory with the project directory
 base = "D:\OneDrive\PerceptionActionReview"
 MatPath = os.path.join(base, "Preprocessed")
+ProjectPath = os.path.join(base, "Data") 
 
 # the location of the saved fold indices, and to which the datasets will be saved
 if not os.path.exists(ProjectPath):
