@@ -50,7 +50,7 @@ for f = 1:10 %run over the 10 folds
         TdGains = TdGains.AllTdGains;
 
         %getting predictions
-        preds = load(['Preds_SN', num2str(participants(p)), '_BothStretch_Att_Run', Run, '.mat']);
+        preds = load(['Preds_SN', num2str(participants(p)), '_BothStretch_Run', Run, '.mat']);
         preds = preds.Preds;
 
         [pses, pred_pses, jnds, pred_jnds] = PsychometricMatsBothStretch(KComps, TdGains, Labels, preds);
