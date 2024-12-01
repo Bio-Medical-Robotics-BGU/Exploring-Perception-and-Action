@@ -1,4 +1,5 @@
 # Exploring-Perception-and-Action
+BGU-SPAD: Skin stretch Perception and Action Dataset and code
 This repository contains all the data and code used in the manuscript titled "Can Information About Stiffness Perception be Inferred
 from Action Signals Using Models?", published in eNeuro.
 
